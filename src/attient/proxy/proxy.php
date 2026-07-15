@@ -1,4 +1,12 @@
 <?php
+/*
+ * Copyright (c) 2026 Dinh Thoai Tran <attaceph@protonmail.com>
+ * All rights reserved.
+ *
+ * License: GPL v.2
+ * Source: https://github.com/attaceph/airespaker
+ *
+ */
 
 function g_text_get( $uri, &$ready ) {
   $host = @file_get_contents(__DIR__ . '/../host.txt');
