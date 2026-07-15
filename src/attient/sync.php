@@ -1,4 +1,13 @@
 <?php
+/*
+ * Copyright (c) 2026 Dinh Thoai Tran <attaceph@protonmail.com>
+ * All rights reserved.
+ *
+ * License: GPL v.2
+ * Source: https://github.com/attaceph/airespaker
+ *
+ */
+
 function g_param( $key ) {
     if ( isset( $_POST[ $key ] ) ) return $_POST[ $key ];
     if ( isset( $_GET[ $key ] ) ) return $_GET[ $key ];
