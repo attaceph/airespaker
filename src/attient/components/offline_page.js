@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2026 Dinh Thoai Tran <attaceph@protonmail.com>
+ * All rights reserved.
+ *
+ * License: GPL v.2
+ * Source: https://github.com/attaceph/airespaker
+ *
+ */
+
 const gv_offline_page_text = `=======_==========================_============
   __ _(_)  _ _ ___ ____ __   __ _\| \|_____ _ _ 
  / _\` \| \| \| '_/ -_\|_-< '_ \\ / _\` \| / / -_) '_\|
