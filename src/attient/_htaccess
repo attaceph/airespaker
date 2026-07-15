@@ -1,0 +1,17 @@
+RewriteEngine On
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/index\.php(.*)$
+RewriteCond %{REQUEST_URI} !^/sync\.php(.*)$
+
+RewriteCond %{REQUEST_URI} !^/components/offline_page\.js(.*)$
+RewriteCond %{REQUEST_URI} !^/components/offline_page\.css(.*)$
+RewriteCond %{REQUEST_URI} !^/components/online_page\.js(.*)$
+RewriteCond %{REQUEST_URI} !^/components/online_page\.css(.*)$
+
+RewriteCond %{REQUEST_URI} !^/proxy/sample\.php(.*)$
+RewriteCond %{REQUEST_URI} !^/proxy/text_get\.php(.*)$
+
+RewriteCond %{REQUEST_URI} !^/host\.txt(.*)$
+RewriteRule ^(.*)$ /index.php?$1 [NC,L]
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://airespaker.is-best.net/$1 [R,L]
