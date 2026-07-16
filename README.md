@@ -17,7 +17,7 @@ responses from well-known AIs and manage that responses for
 retrieval, reference, and storage purposes.
 
 + Well-known AIs include
-  o Google AI, Bing Copilot Search
+  o Google AI Search, Bing Copilot Search
 
 
 ```
