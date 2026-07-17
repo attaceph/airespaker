@@ -48,7 +48,7 @@ const DashboardPage = {
 <input type="button" class="dashboard-button-2" value="&lt;&lt;" v-on:click="doAIRListBack" /> &nbsp; [ {{ air_list_ai_page_no }} ] &nbsp; <input type="button" class="dashboard-button-2" value="&gt;&gt;" v-on:click="doAIRListNext" />
   </div>
   <div :class="item.full ? 'dashboard-air-list-item dashboard-air-list-item-full' : 'dashboard-air-list-item  dashboard-air-list-item-half'" v-for="item in air_list_ai">
-  <div class="dashboard-air-list-item-toolbar"><input type="button" :class="item.full ? 'dashboard-button' : 'dashboard-button-2'" value="&lt;|" v-on:click="doAIRListItemTurnOff(item)" />&nbsp;<input type="button" :class="item.full ? 'dashboard-button-2' : 'dashboard-button'" value="|&gt;" v-on:click="doAIRListItemTurnOn(item)" />&nbsp;[ {{ item.no }} : {{ item.code }} ]&nbsp;<input type="button" class="dashboard-button-2" :value="item.ai_name" v-on:click="doFilterByAI(item.ai_slug)" style="margin-right: 10px; margin-bottom: 5px;" /><input v-for="part in item.tags" type="button" class="dashboard-button-2" :value="part" v-on:click="doFilterByAI('', part)" style="margin-right: 10px; margin-bottom: 5px;" />
+  <div class="dashboard-air-list-item-toolbar"><input type="button" :class="item.full ? 'dashboard-button' : 'dashboard-button-2'" value="&lt;|" v-on:click="doAIRListItemTurnOff(item)" />&nbsp;<input type="button" :class="item.full ? 'dashboard-button-2' : 'dashboard-button'" value="|&gt;" v-on:click="doAIRListItemTurnOn(item)" />&nbsp;[ {{ item.no }} : {{ item.code }} ]&nbsp;<input type="button" class="dashboard-button" value="X" v-on:click="doDeleteAIR(item.code)" style="margin-right: 5px; margin-bottom: 5px;" /><input type="button" class="dashboard-button" value="C" v-on:click="doCopyAIR(item)" style="margin-right: 5px; margin-bottom: 5px;" /><input type="button" class="dashboard-button-2" :value="item.ai_name" v-on:click="doFilterByAI(item.ai_slug)" style="margin-right: 10px; margin-bottom: 5px;" /><input v-for="part in item.tags" type="button" class="dashboard-button-2" :value="part" v-on:click="doFilterByAI('', part)" style="margin-right: 10px; margin-bottom: 5px;" />
   </div>
   <div class="dashboard-air-list-item-text" v-html="item.reply">
   </div>
@@ -76,6 +76,10 @@ const DashboardPage = {
     };
   },
   methods: {
+    doCopyAIR( item ) {
+      let reply = item['raw_reply'];
+      navigator.clipboard.writeText(reply);
+    },
     doAIRListItemTurnOn( item ) {
       item['full'] = true;
     },
@@ -170,6 +174,7 @@ const DashboardPage = {
             let id = fields[0];
             let query = gj_unescape(fields[1]);
             let reply = gj_unescape(fields[2]);
+            let raw_reply = reply + '';
             reply = reply.replaceAll('<', '&lt;').replaceAll('>', '&gt;');
             reply = gj_md2html( reply );
             let no = ( v_page_no - 1 ) * v_page_size + i;
@@ -183,12 +188,18 @@ const DashboardPage = {
               tags.push(pt);
             }
             let code = fields[6].trim();
-            let item = { 'tags': tags, 'code': code, 'full': false, 'no': no, 'id': id, 'query': query, 'reply': reply, 'ai_slug': ai_slug, 'ai_name': ai_name };
+            let item = { 'tags': tags, 'code': code, 'raw_reply': raw_reply, 'full': false, 'no': no, 'id': id, 'query': query, 'reply': reply, 'ai_slug': ai_slug, 'ai_name': ai_name };
             list.push( item );
           }
           v_this.air_list_ai = list;
           v_this.air_list_ai_show = 'yes';
         }
+      });
+    },
+    doDeleteAIR(code) {
+      let v_this = this;
+      gj_text_post( '/airespaker/?method=delete_air', { 'token': this.token, 'code': code }, 'n', function( text ) {
+        v_this.doFilterByAI(v_this.air_list_ai_slug, v_this.air_list_ai_tag);
       });
     },
     doLogout() {
