@@ -173,10 +173,10 @@ const DashboardPage = {
             reply = reply.replaceAll('<', '&lt;').replaceAll('>', '&gt;');
             reply = gj_md2html( reply );
             let no = ( v_page_no - 1 ) * v_page_size + i;
-            let ai_slug = fields[3];
-            let ai_name = fields[4];
+            let ai_slug = gj_unescape(fields[3]);
+            let ai_name = gj_unescape(fields[4]);
             let tags = [];
-            let parts = fields[5].split(',');
+            let parts = gj_unescape(fields[5]).split(',');
             for (var j = 0; j < parts.length; j++) {
               let pt = parts[j].trim();
               if (pt === '') continue;

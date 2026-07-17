@@ -48,7 +48,7 @@ const TakePage = {
       ais_list_text: '',
       ais_list: [],
       guide_video: '',
-      guide_video_url: 'https://www.youtube.com/embed/_VYjOXjKne4'
+      guide_video_url: 'https://www.youtube.com/watch?v=MIzoECcgcK0'
     };
   },
   methods: {
@@ -107,7 +107,7 @@ const TakePage = {
         }
       }
       this.guide_video = '';
-      this.guide_video_url = 'https://www.youtube.com/embed/_VYjOXjKne4';
+      this.guide_video_url = 'https://www.youtube.com/watch?v=MIzoECcgcK0';
     },
     doTake() {
       let v_this = this;
