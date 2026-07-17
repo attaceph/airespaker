@@ -26,3 +26,4 @@ grant execute on procedure ara.tag_list to 'ara'@'%';
 grant execute on procedure ara.`current_user` to 'ara'@'%';
 grant execute on procedure ara.create_user to 'ara'@'%';
 grant execute on procedure ara.update_user to 'ara'@'%';
+grant execute on procedure ara.report to 'ara'@'%';
