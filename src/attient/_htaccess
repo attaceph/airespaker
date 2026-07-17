@@ -3,13 +3,26 @@ RewriteCond %{SCRIPT_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !^/index\.php(.*)$
 RewriteCond %{REQUEST_URI} !^/sync\.php(.*)$
 
+RewriteCond %{REQUEST_URI} !^/components/md2html\.js(.*)$
+RewriteCond %{REQUEST_URI} !^/components/md2html\.css(.*)$
 RewriteCond %{REQUEST_URI} !^/components/offline_page\.js(.*)$
 RewriteCond %{REQUEST_URI} !^/components/offline_page\.css(.*)$
 RewriteCond %{REQUEST_URI} !^/components/online_page\.js(.*)$
 RewriteCond %{REQUEST_URI} !^/components/online_page\.css(.*)$
+RewriteCond %{REQUEST_URI} !^/components/login_page\.js(.*)$
+RewriteCond %{REQUEST_URI} !^/components/login_page\.css(.*)$
+RewriteCond %{REQUEST_URI} !^/components/dashboard_page\.js(.*)$
+RewriteCond %{REQUEST_URI} !^/components/dashboard_page\.css(.*)$
+RewriteCond %{REQUEST_URI} !^/components/take_page\.js(.*)$
+RewriteCond %{REQUEST_URI} !^/components/take_page\.css(.*)$
+RewriteCond %{REQUEST_URI} !^/components/profile_page\.js(.*)$
+RewriteCond %{REQUEST_URI} !^/components/profile_page\.css(.*)$
+RewriteCond %{REQUEST_URI} !^/components/register_page\.js(.*)$
+RewriteCond %{REQUEST_URI} !^/components/register_page\.css(.*)$
 
 RewriteCond %{REQUEST_URI} !^/proxy/sample\.php(.*)$
 RewriteCond %{REQUEST_URI} !^/proxy/text_get\.php(.*)$
+RewriteCond %{REQUEST_URI} !^/proxy/text_post\.php(.*)$
 
 RewriteCond %{REQUEST_URI} !^/host\.txt(.*)$
 RewriteRule ^(.*)$ /index.php?$1 [NC,L]
