@@ -333,12 +333,12 @@ function g_all_tags( $token ) {
 
 function g_slug( $src ) {
   $tag = '';
-  $chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  $chars = 'abcdefghijklmnopqrstuvwxyz0123456789-_';
   for ( $i = 0; $i < strlen( $src ); $i++ ) {
     $c = strtolower($src[$i]);
     if ( strpos( $chars, $c ) !== false ) {
       $tag .= $c;
-    } else if ( $c == ' ' || $c == '-' || $c == '_' ) {
+    } else if ( $c == ' ' ) {
       $tag .= '-';
     } else {
       $tag .= '_';
