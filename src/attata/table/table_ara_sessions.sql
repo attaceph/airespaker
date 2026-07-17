@@ -7,17 +7,12 @@
  *
  */
 
-drop table if exists ara_ais;
-create table ara_ais (
+drop table if exists ara_sessions;
+create table ara_sessions (
   id bigint not null auto_increment primary key,
-
-  slug varchar(256) not null,
-  name varchar(1024) not null,
-
-  guide_url varchar(1024) not null,
-
+  token varchar(36) not null,
+  user_id bigint not null,
   created timestamp not null default current_timestamp,
   updated timestamp not null default current_timestamp on update current_timestamp,
-  constraint uc_ara_ais unique(slug)
+  constraint uc_ara_sessions unique(token)
 ) auto_increment = 1;
-
