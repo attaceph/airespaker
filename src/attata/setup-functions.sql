@@ -7,7 +7,5 @@
  *
  */
 
-\. ./setup-tables.sql
-\. ./setup-procedures.sql
-\. ./setup-functions.sql
-\. ./setup-api.sql
+\. ./function/local/function_local_escape_f.sql
+\. ./function/local/function_local_unescape_f.sql

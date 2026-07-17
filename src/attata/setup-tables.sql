@@ -7,7 +7,7 @@
  *
  */
 
-\. ./setup-tables.sql
-\. ./setup-procedures.sql
-\. ./setup-functions.sql
-\. ./setup-api.sql
+\. ./table/table_ara_users.sql
+\. ./table/table_ara_sessions.sql
+\. ./table/table_ara_ais.sql
+\. ./table/table_ara_responses.sql

@@ -7,7 +7,8 @@
  *
  */
 
-\. ./setup-tables.sql
-\. ./setup-procedures.sql
-\. ./setup-functions.sql
-\. ./setup-api.sql
+set @g_demo_size = 1024*1024*256;
+
+set @g_db_pwd = 'abcdefghj';
+set @g_admin_pwd = 'abcdefghj';
+set @g_demo_pwd = 'abcdefghj';
