@@ -7,15 +7,15 @@
  *
  */
 
-drop function if exists local_escape_f;
+drop function if exists local_unescape_f;
 delimiter $$
-create function local_escape_f( p_input longtext )
+create function local_unescape_f( p_input longtext )
 returns longtext
 deterministic
 sql security invoker
 begin
   declare v_output longtext;
-  call local_escape( p_input, v_output );
+  call local_unescape( p_input, v_output );
   return v_output;
 end;$$
 delimiter ;
