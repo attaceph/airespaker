@@ -20,4 +20,31 @@ retrieval, reference, and storage purposes.
   o Google AI Search, Bing Copilot Search, ChatGPT
 
 
+---------------------|_|-----------------------
+                  Demo Site
+-----------------------------------------------
+
++ URL: https://airespaker.is-best.net
+
+```
++ Live: [[airespaker] AI Response Taker](https://airespaker.is-best.net)
+
+```
+
+
+---------------------|_|-----------------------
+                  Tech Stack
+-----------------------------------------------
+
++ Front-end:
+  o VueJS 3 on PHP-based site which is hosted on InfinityFree.com
+
++ Bridge:
+  o HTTP tunnel which is hosted on Pinggy.io
+
++ Back-end:
+  o Pure PHP site which is hosted on Smartphone placed on Wi-Fi network
+  o Database which is on MariaDB and is published only API procedures & functions
+
+
 ```
