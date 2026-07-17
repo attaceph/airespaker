@@ -58,4 +58,23 @@ retrieval, reference, and storage purposes.
   o By AI
   o By Tag
 
+
+---------------------|_|-----------------------
+            Challenges & Solutions
+-----------------------------------------------
+
+1. Publish back-end on smartphone placed on Wi-Fi network using Pinggy.io Free account
+
++ Pinggy.io provides service for making HTTP tunnel to public website which is hosted on local network.
+Free account requires confirmation screen for first time accessing website. HTTP tunnel is available only in
+1 hour.
+
+== Solution (on boarding) ==>
+  o Use VueJS 3 to make one page application, checking HTTP tunnel's availability for each 5 seconds
+  o Send 'X-Pinggy-No-Screen' header
+
+== Solution (on production) ==>
+  o Use Premium account of Pinggy.io
+
+
 ```
