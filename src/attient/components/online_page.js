@@ -7,8 +7,7 @@
  *
  */
 
-const gv_online_page_text = `=======_==========================_============
-  __ _(_)  _ _ ___ ____ __   __ _\| \|_____ _ _ 
+const gv_online_page_text = `  __ _(_)  _ _ ___ ____ __   __ _\| \|_____ _ _ 
  / _\` \| \| \| '_/ -_\|_-< '_ \\ / _\` \| / / -_) '_\|
  \\__,_\|_\| \|_\| \\___/__/ .__/ \\__,_\|_\\_\\___\|_\|  
 =====================\|_\|=======================
@@ -31,25 +30,27 @@ retrieval, reference, and storage purposes.
 ---------------------\|_\|-----------------------
                Getting Started
 -----------------------------------------------
-
-     -------------------------------------
-                 Demo Account
-     -------------------------------------
-
-+ Username: (cannot change profile) demoa1, demoa2, demoa3
-+ Username: (can change profile)    demob1, demob2, demob3
-+ Password: rzutomqahegpnyx
-
-     -------------------------------------
-                   Entrance
-     -------------------------------------
-
 `;
 
 const OnlinePage = {
-  template: `<div v-show="online && page == 'home'" class="online-page"><div class="online-page-inner">{{ online_page_text }}
+  template: `<div v-show="online && page == 'home'" class="online-page"><div class="online-page-inner">=======_==========================<span v-on:click="hide=false">_</span>============<br/>{{ online_page_text }}
+<div v-show="!hide"><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Demo Account
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/><br/>
 
-<input type="button" class="online-button-2" @click="go_page('login')" value="Login" /> &nbsp; <input type="button" class="online-button-2" @click="go_page('register')" value="Register" />
+<br/>+ Username: (cannot change profile) demoa1, demoa2, demoa3
+<br/>+ Username: (can change profile)    demob1, demob2, demob3
+<br/>+ Password: rzutomqahegpnyx<br/>
+
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Entrance
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/><br/>
+
+<input v-show="!hide" type="button" class="online-button-2" @click="go_page('login')" value="Login" /> &nbsp; <input  v-show="!hide" type="button" class="online-button-2" @click="go_page('register')" value="Register" />
+</div>
+<div class="take-guide" v-show="hide"><div class='embed-container'><iframe src="https://www.youtube.com/embed/MIzoECcgcK0" frameborder='0' allowfullscreen></iframe></div></div>
+
+<br/><a href="https://www.producthunt.com/p/airespaker-ai-response-taker" target="_blank" rel="noopener noreferrer"><img alt="[airespaker] AI Response Taker - Notes keeper for AI responses | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1198843&amp;theme=light&amp;t=1784279627210"></a>
 
   </div></div>
   <login_page v-show="online && page == 'login'" ref="login_page" @go_page="go_page" @set_token="set_token"></login_page>  
@@ -64,7 +65,8 @@ const OnlinePage = {
       page: 'home',
       token: '',
       online_page_text: gv_online_page_text,
-      online: false
+      online: false,
+      hide: true
     };
   },
   methods: {
