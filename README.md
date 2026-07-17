@@ -55,6 +55,10 @@ retrieval, reference, and storage purposes.
 
 + Add AI responses
 
++ Delete AI responses
+
++ Copy AI response to clipboard
+
 + Filter & display AI responses:
   o By Reponse Code
   o By AI
