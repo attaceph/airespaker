@@ -145,6 +145,12 @@ if ( $method === 'login' ) {
   $token = trim( g_param('token') );
   g_logout( $token );
   echo "Success: ";
+} else if ( $method === 'delete_air' ) {
+  header('Content-Type: text/plain');
+  $token = trim( g_param('token') );
+  $code = trim( g_param('code') );
+  g_delete_air( $token, $code );
+  echo "Success: ";
 } else {
   header('Content-Type: text/plain');
   echo "Error: Method is not valid!";

@@ -314,6 +314,14 @@ function g_tag_list( $token, $page_no, $page_size ) {
   return $tags;
 }
 
+function g_delete_air( $token, $code ) {
+  global $g_config;
+  $token = g_escape( $token );
+  $code = g_escape( $code );
+  $sql = "set @v_token = ''; call ara.unescape('$token', @v_token); set @v_code = ''; call ara.unescape('$code', @v_code); call ara.delete_air( @v_token, @v_code );";
+  g_exec_common( $sql );
+}
+
 function g_all_tags( $token ) {
   $page_size = 20;
   $page_no = 1;
