@@ -7,17 +7,13 @@
  *
  */
 
-drop procedure if exists ais_list;
+drop procedure if exists logout;
 delimiter $$
-create procedure ais_list( 
+create procedure logout( 
   in p_token varchar(36)
 )
 sql security definer
 begin
-  declare v_is_online int default 0;
-  call is_online( p_token, v_is_online );
-  if v_is_online then
-    select `slug`, `name`, `guide_url` from `ara_ais` order by `id`;
-  end if;
+  delete from `ara_sessions` where `token` = local_escape_f(p_token);
 end;$$
 delimiter ;
