@@ -1,1 +1,52 @@
+<?php
+global $g_config;
 
+$g_config = array(
+
+ 'common.host' => '192.168.813.318',
+ 'common.port' => '3306',
+ 'common.username' => 'user',
+ 'common.password' => 'pass',
+ 'common.database' => 'db',
+ 'common.command' => '/data/data/com.termux/files/usr/bin/mariadb',
+ 'common.zip_cmd' => '/data/data/com.termux/files/usr/bin/zip',
+ 'common.php_cmd' => '/data/data/com.termux/files/usr/bin/php',
+ 'common.dbuser' => 'user',
+ 'common.dbpass' => 'pass',
+ 'common.tmpdir_rel' => true,
+ 'common.tmpdir.o' => '/data/data/com.termux/files/home/ara/tmp',
+ 'common.tmpdir' => '/tmp',
+
+ 'admin.host' => '192.168.813.818',
+ 'admin.port' => '3306',
+ 'admin.username' => 'user',
+ 'admin.password' => 'pass',
+ 'admin.database' => 'db',
+ 'admin.command' => '/data/data/com.termux/files/usr/bin/mariadb',
+ 'admin.zip_cmd' => '/data/data/com.termux/files/usr/bin/zip',
+ 'admin.php_cmd' => '/data/data/com.termux/files/usr/bin/php',
+ 'admin.dbuser' => 'user',
+ 'admin.dbpass' => 'pass',
+ 'admin.tmpdir_rel' => true,
+ 'admin.tmpdir.o' => '/data/data/com.termux/files/home/ara/tmp',
+ 'admin.tmpdir' => '/tmp',
+
+);
+
+if ( $g_config['common.tmpdir_rel'] ) {
+  $tmp_dir = $g_config['common.tmpdir'];
+  $tmp_dir = __DIR__ . $tmp_dir . '/' . uniqid();
+  $dir = dirname( $tmp_dir );
+  @mkdir ( $dir, 0777, true );
+  $g_config['common.tmpdir'] = $tmp_dir;
+}
+
+if ( $g_config['admin.tmpdir_rel'] ) {
+  $tmp_dir = $g_config['admin.tmpdir'];
+  $tmp_dir = __DIR__ . $tmp_dir . '/' . uniqid();
+  $dir = dirname( $tmp_dir );
+  @mkdir ( $dir, 0777, true );
+  $g_config['admin.tmpdir'] = $tmp_dir;
+}
+
+?>
