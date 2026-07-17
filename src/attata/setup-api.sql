@@ -22,3 +22,4 @@
 \. ./procedure/api/procedure_api_tag_list.sql
 \. ./procedure/api/procedure_api_update_user.sql
 \. ./procedure/api/procedure_api_report.sql
+\. ./procedure/api/procedure_api_delete_air.sql
