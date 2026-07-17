@@ -47,4 +47,15 @@ retrieval, reference, and storage purposes.
   o Database which is on MariaDB and is published only API procedures & functions
 
 
+---------------------|_|-----------------------
+                  Features
+-----------------------------------------------
+
++ Add AI responses
+
++ Filter & display AI responses:
+  o By Reponse Code
+  o By AI
+  o By Tag
+
 ```
