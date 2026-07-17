@@ -7,7 +7,7 @@
  *
  */
 
-.online-page {
+.take-page {
   position: fixed;
   top: 0px;
   left: 0px;
@@ -26,11 +26,23 @@
   overflow: auto;
 }
 
-.online-page .online-page-inner {
+.take-page .take-page-inner {
   min-width: 640px;
 }
 
-.online-button {
+.take-text {
+  width: 370px;
+  padding: 5px 10px 5px 10px;
+  font-family: monospace;
+  font-size: 12px;
+  color: black;
+  background-color: white;
+  border: none;
+  border-left: solid 3px gainsboro;
+  border-right: solid 3px gainsboro;
+}
+
+.take-button {
   padding: 5px 10px 5px 10px;
   font-family: monospace;
   font-size: 12px;
@@ -43,7 +55,7 @@
   cursor: hand;
 }
 
-.online-button-2 {
+.take-button-2 {
   padding: 5px 10px 5px 10px;
   font-family: monospace;
   font-size: 12px;
@@ -55,4 +67,18 @@
   cursor: pointer;
   cursor: hand;
 }
+
+.take-result {
+  font-family: monospace;
+  font-size: 14px;
+  color: red;
+  //background-color: white;
+}
+
+.take-guide {
+  width: 400px;
+}
+
+.take-guide .embed-container { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; max-width: 100%; } 
+.take-guide .embed-container iframe, .take-guide .embed-container object, .take-guide .embed-container embed { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 

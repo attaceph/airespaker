@@ -7,7 +7,7 @@
  *
  */
 
-.online-page {
+.profile-page {
   position: fixed;
   top: 0px;
   left: 0px;
@@ -26,11 +26,23 @@
   overflow: auto;
 }
 
-.online-page .online-page-inner {
+.profile-page .profile-page-inner {
   min-width: 640px;
 }
 
-.online-button {
+.profile-text {
+  width: 370px;
+  padding: 5px 10px 5px 10px;
+  font-family: monospace;
+  font-size: 12px;
+  color: black;
+  background-color: white;
+  border: none;
+  border-left: solid 3px gainsboro;
+  border-right: solid 3px gainsboro;
+}
+
+.profile-button {
   padding: 5px 10px 5px 10px;
   font-family: monospace;
   font-size: 12px;
@@ -43,7 +55,7 @@
   cursor: hand;
 }
 
-.online-button-2 {
+.profile-button-2 {
   padding: 5px 10px 5px 10px;
   font-family: monospace;
   font-size: 12px;
@@ -54,5 +66,12 @@
   border-radius: 10px;
   cursor: pointer;
   cursor: hand;
+}
+
+.profile-result {
+  font-family: monospace;
+  font-size: 14px;
+  color: red;
+  //background-color: white;
 }
 

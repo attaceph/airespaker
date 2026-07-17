@@ -1,0 +1,38 @@
+/*
+ * Copyright (c) 2026 Dinh Thoai Tran <attaceph@protonmail.com>
+ * All rights reserved.
+ *
+ * License: GPL v.2
+ * Source: https://github.com/attaceph/airespaker
+ *
+ */
+
+.md_h2 {
+  font-family: monospace;
+  font-size: 18px;
+  margin-top: 10px;
+  padding-bottom: 5px;
+  border-bottom: dashed 3px gainsboro;
+  color: black;
+}
+
+.md_bl {
+  font-family: monospace;
+  font-size: 12px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-left: 10px;
+  //border-left: dotted 5px gainsboro;
+  color: black;
+}
+
+.md_bl::before {
+  content: "  ";
+  position: relative;
+  left: 0px;
+  top: -2px;
+  background-color: gainsboro;
+  margin-right: 5px;
+  font-size: 7px;
+  border-radius: 50%;
+}

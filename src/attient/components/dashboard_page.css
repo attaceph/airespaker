@@ -7,7 +7,7 @@
  *
  */
 
-.online-page {
+.dashboard-page {
   position: fixed;
   top: 0px;
   left: 0px;
@@ -26,11 +26,23 @@
   overflow: auto;
 }
 
-.online-page .online-page-inner {
+.dashboard-page .dashboard-page-inner {
   min-width: 640px;
 }
 
-.online-button {
+.dashboard-text {
+  width: 370px;
+  padding: 5px 10px 5px 10px;
+  font-family: monospace;
+  font-size: 12px;
+  color: black;
+  background-color: white;
+  border: none;
+  border-left: solid 3px gainsboro;
+  border-right: solid 3px gainsboro;
+}
+
+.dashboard-button {
   padding: 5px 10px 5px 10px;
   font-family: monospace;
   font-size: 12px;
@@ -43,7 +55,7 @@
   cursor: hand;
 }
 
-.online-button-2 {
+.dashboard-button-2 {
   padding: 5px 10px 5px 10px;
   font-family: monospace;
   font-size: 12px;
@@ -54,5 +66,69 @@
   border-radius: 10px;
   cursor: pointer;
   cursor: hand;
+}
+
+.dashboard-result {
+  font-family: monospace;
+  font-size: 14px;
+  color: red;
+  background-color: white;
+}
+
+.dashboard-air-list {
+  margin-top: 20px;
+}
+
+.dashboard-air-list .dashboard-air-list-item {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  border-left: dashed 3px green;
+  border-top: dotted 2px green;
+  border-bottom: dotted 2px green;
+  font-family: monospace;
+  font-size: 12px;
+  color: black;
+  white-space: pre-wrap;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.dashboard-air-list .dashboard-air-list-item .dashboard-air-list-item-toolbar {
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  border-bottom: dashed 3px gainsboro;
+}
+
+.dashboard-air-list .dashboard-air-list-item-full {
+  height: auto;
+  overflow: auto;
+}
+
+.dashboard-air-list .dashboard-air-list-item-half {
+  height: 400px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.dashboard-tag-list .dashboard-air-list-item-half {
+  height: 100px !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.dashboard-tag-list .dashboard-air-list-item {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  border-left: dashed 3px gainsboro !important;
+  border-top: dotted 2px gainsboro !important;
+  border-bottom: dotted 2px gainsboro !important;
+  font-family: monospace;
+  font-size: 12px;
+  color: black;
+  white-space: pre-wrap;
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
