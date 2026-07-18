@@ -12,6 +12,7 @@
 <html>
 <head>
   <title>[airespaker] AI Response Taker</title>
+  <link rel="icon" type="image/png" href="https://github.com/attaceph/airespaker/blob/main/brd/icon-96.png?raw=true">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <script src="/components/md2html.js"></script>
@@ -32,6 +33,7 @@
   <link rel="stylesheet" href="/components/register_page.css">
   <script>
 let gv_app = null;
+let go_enable_prelaunch = true;
 
 function gj_escape( sql ) {
   sql = sql.replaceAll( "_", "_._us_._" );
