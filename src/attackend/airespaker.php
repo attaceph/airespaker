@@ -66,6 +66,35 @@ function g_exec_common( $sql ) {
   return $text;
 }
 
+function g_exec_ara( $sql ) {
+  global $g_config;
+
+  $host = $g_config['ara.host'];
+  $port = $g_config['ara.port'];
+  $user = $g_config['ara.username'];
+  $pass = $g_config['ara.password'];
+  $dbname = $g_config['ara.database'];
+
+  $cmd = $g_config['ara.command'];
+  if ( strpos( $cmd, 'mariadb' ) !== false ) {
+    $cmd .= " --skip-ssl-verify-server-cert";
+  } else if ( strpos( $cmd, 'mysql' ) !== false ) {
+    $cmd .= " --ssl-mode=DISABLED";  
+  }
+
+  $tmp_dir = $g_config['ara.tmpdir'];
+  @mkdir( $tmp_dir, 0777, true );
+  $uid = uniqid();
+  $ufn = $tmp_dir . '/' . $uid . '.sql';
+  $fn = $uid . '.sql';
+  @file_put_contents( $ufn, $sql );
+
+  $query = "cd $tmp_dir && $cmd --disable-auto-rehash -h $host -P $port --user=$user --password=$pass -e \"use $dbname; source ./$fn ; \" ";
+  $text = @shell_exec($query) . '';
+  @unlink( $ufn );
+  return $text;
+}
+
 function g_exec_admin( $sql ) {
   global $g_config;
 
@@ -101,6 +130,22 @@ function g_login_common() {
   $pass = g_escape( $g_config['common.dbpass'] );
   $sql = "set @v_error = ''; set @v_user = ''; call ara.unescape( '$user', @v_user ); set @v_pass = ''; call ara.unescape( '$pass', @v_pass ); set @v_token = ''; call ara.login( @v_user, @v_pass, @v_token, @v_error ); select @v_token;";
   $text = g_exec_common( $sql );
+  if ( $text === null ) {
+    return false;
+  }
+  $lines = explode( "\n", trim($text) );
+  if ( count( $lines ) !== 2 ) return false;
+  $token = trim( $lines[1] );
+  if ( $token === '' ) return false;
+  return $token;
+}
+
+function g_login_ara() {
+  global $g_config;
+  $user = g_escape( $g_config['ara.dbuser'] );
+  $pass = g_escape( $g_config['ara.dbpass'] );
+  $sql = "set @v_error = ''; set @v_user = ''; call ara.unescape( '$user', @v_user ); set @v_pass = ''; call ara.unescape( '$pass', @v_pass ); set @v_token = ''; call ara.login( @v_user, @v_pass, @v_token, @v_error ); select @v_token;";
+  $text = g_exec_ara( $sql );
   if ( $text === null ) {
     return false;
   }
@@ -157,7 +202,6 @@ function g_create_user( $username, $password, $name, $email, $phone ) {
     g_exec_admin( $sql_lo );
     return false;
   }
-  echo $text;
   $lines = explode( "\n", trim($text) );
   if ( count( $lines ) !== 2 ) {
     g_exec_admin( $sql_lo );
@@ -185,6 +229,35 @@ function g_update_user( $token, $name, $email, $phone ) {
   $phone = g_escape( $phone );
   $sql = "set @v_token = ''; call ara.unescape('$token', @v_token); set @v_name = ''; call ara.unescape('$name', @v_name); set @v_email = ''; call ara.unescape('$email', @v_email); set @v_phone = ''; call ara.unescape('$phone', @v_phone); call ara.update_user( @v_token, @v_name, @v_email, @v_phone );";
   g_exec_common( $sql );
+}
+
+function g_air_cache( $query, &$reply ) {
+  global $g_config;
+  $reply = '_';
+  $token = g_login_ara();
+  if ( $token === false ) return false;
+  $token = g_escape( $token );
+  $query = g_escape( $query );
+  $sql_lo = "set @v_token = ''; call ara.unescape('$token', @v_token); call ara.logout(@v_token);";
+  $sql = "set @v_token = ''; call ara.unescape('$token', @v_token); set @v_query = ''; call ara.unescape('$query', @v_query); set @v_reply = '_'; call ara.air_cache( @v_token, @v_query, @v_reply ); select @v_reply;";
+  $text = g_exec_ara( $sql );
+  if ( $text === null ) {
+    g_exec_ara( $sql_lo );
+    return false;
+  }
+  $lines = explode( "\n", trim($text) );
+  if ( count( $lines ) !== 2 ) {
+    g_exec_ara( $sql_lo );
+    return false;
+  }
+  $reply = trim( $lines[1] );
+  if ( $reply === '_' ) {
+    g_exec_ara( $sql_lo );
+    return false;
+  }
+  $reply = g_unescape( $reply );
+  g_exec_ara( $sql_lo );
+  return true;
 }
 
 function g_login_common_user( $user, $pass, &$error ) {
@@ -400,21 +473,104 @@ function g_take_air( $token, $query, $machine, $tags ) {
     return g_take_air_bing_copilot_search( $token, $query, $machine, $tags );
   } else if ( $machine === 'chatgpt' ) {
     return g_take_air_chatgpt( $token, $query, $machine, $tags );
+  } else if ( $machine === 'others' ) {
+    return g_take_air_others( $token, $query, $machine, $tags );
   } else {
     return false;
   }
 }
 
-function g_take_air_google_ai_search( $token, $query, $ai, $tags ) {
-  return g_save_air( $token, $ai, $tags, '_', $query );
+function g_split_air( $air, &$query, &$reply ) {
+  $query = '_';
+  $reply = $air;
+  $idx = strpos( $air, "```aiq" );
+  if ( $idx !== false ) {
+    $idx_2 = strpos( $air, "```", $idx + 6 );
+    if ( $idx_2 !== false ) {
+      $query = trim( substr( $air, $idx + 6, $idx_2 - ($idx + 6) ) );
+      $query = g_slug( $query );
+      while ( strpos( $query, "__" ) !== false ) {
+        $query = str_replace( "__", "_", $query );
+      }
+      while ( strpos( $query, "--" ) !== false ) {
+        $query = str_replace( "--", "-", $query );
+      }
+      if ( $query[0] === '-' || $query[0] === '_' ) {
+        $query = substr( $query, 1 );
+      }
+      if ( $query[strlen($query)-1] === '-' || $query[strlen($query)-1] === '_' ) {
+        $query = substr( $query, 0, strlen($query) - 1 );
+      }
+      $reply = trim(substr( $air, $idx_2 + 3 ));
+    }
+  }
 }
 
-function g_take_air_bing_copilot_search( $token, $query, $ai, $tags ) {
-  return g_save_air( $token, $ai, $tags, '_', $query );
+function g_fill_cache( $air ) {
+  $reply = '';
+  $start = 0;
+  $idx = strpos( $air, "```airc", $start );
+  while ( $idx !== false ) {
+    $idx_2 = strpos( $air, "```", $idx + 7 );
+    if ( $idx_2 !== false ) {
+      $query = trim( substr( $air, $idx + 7, $idx_2 - ($idx + 7) ) );
+      $query = g_slug( $query );
+      while ( strpos( $query, "__" ) !== false ) {
+        $query = str_replace( "__", "_", $query );
+      }
+      while ( strpos( $query, "--" ) !== false ) {
+        $query = str_replace( "--", "-", $query );
+      }
+      if ( $query[0] === '-' || $query[0] === '_' ) {
+        $query = substr( $query, 1 );
+      }
+      if ( $query[strlen($query)-1] === '-' || $query[strlen($query)-1] === '_' ) {
+        $query = substr( $query, 0, strlen($query) - 1 );
+      }
+      $cache = '';
+      $rs = g_air_cache( $query, $cache );
+      if ( $rs === false ) $cache = '';
+      $reply .= substr( $air, $start, $idx ) . $cache;
+      $start = $idx_2 + 3;
+    } else {
+      $start = $idx + 7;
+    }
+    $idx = strpos( $air, "```airc", $start );
+  }
+  $reply .= substr( $air, $start );
+  return $reply;
 }
 
-function g_take_air_chatgpt( $token, $query, $ai, $tags ) {
-  return g_save_air( $token, $ai, $tags, '_', $query );
+function g_take_air_google_ai_search( $token, $air, $ai, $tags ) {
+  $query = '_';
+  $reply = '';
+  g_split_air( $air, $query, $reply );
+  $reply = g_fill_cache( $reply );
+  return g_save_air( $token, $ai, $tags, $query, $reply );
+}
+
+function g_take_air_bing_copilot_search( $token, $air, $ai, $tags ) {
+  $query = '_';
+  $reply = '';
+  g_split_air( $air, $query, $reply );
+  $reply = g_fill_cache( $reply );
+  return g_save_air( $token, $ai, $tags, $query, $reply );
+}
+
+function g_take_air_chatgpt( $token, $air, $ai, $tags ) {
+  $query = '_';
+  $reply = '';
+  g_split_air( $air, $query, $reply );
+  $reply = g_fill_cache( $reply );
+  return g_save_air( $token, $ai, $tags, $query, $reply );
+}
+
+function g_take_air_others( $token, $air, $ai, $tags ) {
+  $query = '_';
+  $reply = '';
+  g_split_air( $air, $query, $reply );
+  $reply = g_fill_cache( $reply );
+  return g_save_air( $token, $ai, $tags, $query, $reply );
 }
 
 ?>
