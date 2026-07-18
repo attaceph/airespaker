@@ -57,7 +57,7 @@ const OnlinePage = {
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Features Review
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
-<div class="take-guide" v-show="hide"><div class='embed-container'><iframe src="https://www.youtube.com/embed/MIzoECcgcK0" frameborder='0' allowfullscreen></iframe></div></div>
+<div class="take-guide" v-show="hide"><div class='embed-container'><iframe src="https://www.youtube.com/embed/REesvvuEidE" frameborder='0' allowfullscreen></iframe></div></div>
 
 </div>
 
