@@ -26,18 +26,17 @@ retrieval, reference, and storage purposes.
 + Well-known AIs include
   o Google AI Search, Bing Copilot Search, ChatGPT
 
-
----------------------\|_\|-----------------------
-               Getting Started
------------------------------------------------
 `;
 
 const OnlinePage = {
   template: `<div v-show="online && page == 'home'" class="online-page"><div class="online-page-inner">=======_==========================<span v-on:click="hide=false">_</span>============<br/>{{ online_page_text }}
-<div v-show="!hide"><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Demo Account
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/><br/>
+<div v-show="!hide">---------------------\|_\|-----------------------
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Getting Started
+<br/>-----------------------------------------------<br/>
 
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Demo Account
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
 <br/>+ Username: (cannot change profile) demoa1, demoa2, demoa3
 <br/>+ Username: (can change profile)    demob1, demob2, demob3
 <br/>+ Password: rzutomqahegpnyx<br/>
@@ -45,12 +44,22 @@ const OnlinePage = {
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Entrance
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/><br/>
-
 <input v-show="!hide" type="button" class="online-button-2" @click="go_page('login')" value="Login" /> &nbsp; <input  v-show="!hide" type="button" class="online-button-2" @click="go_page('register')" value="Register" />
 </div>
+<div v-show="hide">---------------------\|_\|-----------------------
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Comming Soon
+<br/>-----------------------------------------------<br/><br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/attaceph/airespaker/blob/main/brd/icon-96.png?raw=true" v-on:click="hide=false" style="cursor: pointer; cursor: hand; margin-top: -8px; width: 20px; height: 20px; " />&nbsp;Launching on 04 Aug 2026&nbsp;<img src="https://github.com/attaceph/airespaker/blob/main/brd/icon-96.png?raw=true" v-on:click="hide=false" style="cursor: pointer; cursor: hand; margin-top: -8px; width: 20px; height: 20px; " />
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
+<br/><a href="https://www.producthunt.com/p/airespaker-ai-response-taker" target="_blank" rel="noopener noreferrer"><img alt="[airespaker] AI Response Taker - Notes keeper for AI responses | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1198843&amp;theme=light&amp;t=1784279627210"></a><br/>
+
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Features Review
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
 <div class="take-guide" v-show="hide"><div class='embed-container'><iframe src="https://www.youtube.com/embed/MIzoECcgcK0" frameborder='0' allowfullscreen></iframe></div></div>
 
-<br/><a href="https://www.producthunt.com/p/airespaker-ai-response-taker" target="_blank" rel="noopener noreferrer"><img alt="[airespaker] AI Response Taker - Notes keeper for AI responses | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1198843&amp;theme=light&amp;t=1784279627210"></a>
+</div>
 
   </div></div>
   <login_page v-show="online && page == 'login'" ref="login_page" @go_page="go_page" @set_token="set_token"></login_page>  
@@ -66,7 +75,7 @@ const OnlinePage = {
       token: '',
       online_page_text: gv_online_page_text,
       online: false,
-      hide: true
+      hide: go_enable_prelaunch
     };
   },
   methods: {
