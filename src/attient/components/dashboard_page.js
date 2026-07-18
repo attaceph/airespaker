@@ -24,7 +24,7 @@ const DashboardPage = {
     
 <input type="button" class="dashboard-button-2" @click="doLogout" value="Logout" /> &nbsp; <input type="button" class="dashboard-button-2" @click="doProfile" value="Profile" /> &nbsp; <input type="button" class="dashboard-button-2" @click="doTake" value="Take AIR" />
 
-<br/><br/><br/>-Filtered by code ---|_|-----------------------<br/>
+<br/><br/><br/>-Filtered by code ---|_|--( or by query )------<br/>
 <input type="text" class="dashboard-text" v-model="code" />&nbsp;<input type="button" class="dashboard-button" @click="doFilterByAI('', '')" value="Enter" />
 <br/>-----------------------------------------------<br/>
 
@@ -160,7 +160,7 @@ const DashboardPage = {
       let v_page_size = this.air_list_ai_page_size;
       this.air_list_ai = [];
       this.air_list_ai_show = 'no';
-      gj_text_get( '/airespaker/?method=air_list&token=' + encodeURIComponent(this.token) + '&ai=' + encodeURIComponent(ai) + '&page_no=' + v_page_no + '&page_size=' + v_page_size + '&tag=' + encodeURIComponent(tag) + '&code=' + encodeURIComponent(this.code), 'n', function( text ) {
+      gj_text_post( '/airespaker/?method=air_list', { 'token': this.token, 'ai': ai, 'page_no': v_page_no, 'page_size': v_page_size, 'tag': tag, 'code': this.code }, 'n', function( text ) {
         if ( text.indexOf('Success:') >= 0 ) {
           let data = text.substring(8).trim();
           let lines = data.split("\n");
