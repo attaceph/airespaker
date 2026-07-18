@@ -23,3 +23,4 @@
 \. ./procedure/api/procedure_api_update_user.sql
 \. ./procedure/api/procedure_api_report.sql
 \. ./procedure/api/procedure_api_delete_air.sql
+\. ./procedure/api/procedure_api_air_cache.sql
