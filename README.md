@@ -64,10 +64,6 @@ retrieval, reference, and storage purposes.
   o By AI
   o By Tag
 
-```
-<iframe width="560" height="315" src="https://www.youtube.com/embed/REesvvuEidE?si=Ezps-8ivDrx3bNkR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-```
 
 ---------------------|_|-----------------------
             Challenges & Solutions
