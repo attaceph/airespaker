@@ -54,7 +54,7 @@ begin
           select r.`id`, local_escape_f( r.`query` ) as `query`, local_escape_f( r.`reply` ) as `reply`, a.slug as `ai_slug`, a.name as `ai_name`, local_escape_f(r.tags) as `tags`, r.code as `code` from `ara_responses` as r, `ara_ais` as a where r.`user_id` = v_user_id and r.`ai_id` = a.`id` and r.`ai_id` = v_ai_id order by r.`id` desc limit v_offset, p_page_size;
         else
           set p_code = concat( '%', p_code, '%' );
-          select r.`id`, local_escape_f( r.`query` ) as `query`, local_escape_f( r.`reply` ) as `reply`, a.slug as `ai_slug`, a.name as `ai_name`, local_escape_f(r.tags) as `tags`, r.code as `code` from `ara_responses` as r, `ara_ais` as a where r.`user_id` = v_user_id and r.`ai_id` = a.`id` and r.`ai_id` = v_ai_id and r.`code` like p_code order by r.`id` desc limit v_offset, p_page_size;
+          select r.`id`, local_escape_f( r.`query` ) as `query`, local_escape_f( r.`reply` ) as `reply`, a.slug as `ai_slug`, a.name as `ai_name`, local_escape_f(r.tags) as `tags`, r.code as `code` from `ara_responses` as r, `ara_ais` as a where r.`user_id` = v_user_id and r.`ai_id` = a.`id` and r.`ai_id` = v_ai_id and ( (r.`code` like p_code) or (r.`query` like p_code) ) order by r.`id` desc limit v_offset, p_page_size;
         end if;
       else
         if p_tag is null then
@@ -65,7 +65,7 @@ begin
             select r.`id`, local_escape_f( r.`query` ) as `query`, local_escape_f( r.`reply` ) as `reply`, a.slug as `ai_slug`, a.name as `ai_name`, local_escape_f(r.tags) as `tags`, r.code as `code` from `ara_responses` as r, `ara_ais` as a where r.`user_id` = v_user_id and r.`ai_id` = a.`id` order by r.`id` desc limit v_offset, p_page_size;
           else
             set p_code = concat( '%', p_code, '%' );
-            select r.`id`, local_escape_f( r.`query` ) as `query`, local_escape_f( r.`reply` ) as `reply`, a.slug as `ai_slug`, a.name as `ai_name`, local_escape_f(r.tags) as `tags`, r.code as `code` from `ara_responses` as r, `ara_ais` as a where r.`user_id` = v_user_id and r.`ai_id` = a.`id` and r.`code` like p_code order by r.`id` desc limit v_offset, p_page_size;
+            select r.`id`, local_escape_f( r.`query` ) as `query`, local_escape_f( r.`reply` ) as `reply`, a.slug as `ai_slug`, a.name as `ai_name`, local_escape_f(r.tags) as `tags`, r.code as `code` from `ara_responses` as r, `ara_ais` as a where r.`user_id` = v_user_id and r.`ai_id` = a.`id` and ( (r.`code` like p_code) or (r.`query` like p_code) ) order by r.`id` desc limit v_offset, p_page_size;
           end if;
         else
           set p_tag = concat( ' , ', p_tag, ' , ' );
@@ -73,7 +73,7 @@ begin
             select r.`id`, local_escape_f( r.`query` ) as `query`, local_escape_f( r.`reply` ) as `reply`, a.slug as `ai_slug`, a.name as `ai_name`, local_escape_f(r.tags) as `tags`, r.code as `code` from `ara_responses` as r, `ara_ais` as a where r.`user_id` = v_user_id and r.`ai_id` = a.`id` and instr(r.tags, p_tag) > 0 order by r.`id` desc limit v_offset, p_page_size;
           else
             set p_code = concat( '%', p_code, '%' );
-            select r.`id`, local_escape_f( r.`query` ) as `query`, local_escape_f( r.`reply` ) as `reply`, a.slug as `ai_slug`, a.name as `ai_name`, local_escape_f(r.tags) as `tags`, r.code as `code` from `ara_responses` as r, `ara_ais` as a where r.`user_id` = v_user_id and r.`ai_id` = a.`id` and instr(r.tags, p_tag) > 0 and r.`code` like p_code order by r.`id` desc limit v_offset, p_page_size;
+            select r.`id`, local_escape_f( r.`query` ) as `query`, local_escape_f( r.`reply` ) as `reply`, a.slug as `ai_slug`, a.name as `ai_name`, local_escape_f(r.tags) as `tags`, r.code as `code` from `ara_responses` as r, `ara_ais` as a where r.`user_id` = v_user_id and r.`ai_id` = a.`id` and instr(r.tags, p_tag) > 0 and ( (r.`code` like p_code) or (r.`query` like p_code) ) order by r.`id` desc limit v_offset, p_page_size;
           end if;
         end if;
       end if;
