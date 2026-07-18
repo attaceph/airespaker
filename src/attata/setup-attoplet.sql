@@ -46,7 +46,7 @@ set @v_ai_id = -1;
 call ara.local_a_ais_insert( 'google-ai-search', 'Google AI Search', 'https://www.youtube.com/watch?v=mSQwm_euc74', @v_ai_id ); select @v_ai_id;
 call ara.local_a_ais_insert( 'bing-copilot-search', 'Bing Copilot Search', 'https://www.youtube.com/watch?v=V2SIqt0SknQ', @v_ai_id ); select @v_ai_id;
 call ara.local_a_ais_insert( 'chatgpt', 'ChatGPT', 'https://www.youtube.com/watch?v=claj06iiyIk', @v_ai_id ); select @v_ai_id;
-call ara.local_a_ais_insert( 'others', 'Other AIs', 'https://www.youtube.com/watch?v=MIzoECcgcK0', @v_ai_id ); select @v_ai_id;
+call ara.local_a_ais_insert( 'others', 'Other AIs', 'https://www.youtube.com/watch?v=REesvvuEidE', @v_ai_id ); select @v_ai_id;
 
 -- ----- --
 
