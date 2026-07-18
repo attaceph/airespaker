@@ -260,6 +260,28 @@ function g_air_cache( $query, &$reply ) {
   return true;
 }
 
+function g_air_my_cache( $token, $query, &$reply ) {
+  global $g_config;
+  $reply = '_';
+  $token = g_escape( $token );
+  $query = g_escape( $query );
+  $sql = "set @v_token = ''; call ara.unescape('$token', @v_token); set @v_query = ''; call ara.unescape('$query', @v_query); set @v_reply = '_'; call ara.air_cache( @v_token, @v_query, @v_reply ); select @v_reply;";
+  $text = g_exec_common( $sql );
+  if ( $text === null ) {
+    return false;
+  }
+  $lines = explode( "\n", trim($text) );
+  if ( count( $lines ) !== 2 ) {
+    return false;
+  }
+  $reply = trim( $lines[1] );
+  if ( $reply === '_' ) {
+    return false;
+  }
+  $reply = g_unescape( $reply );
+  return true;
+}
+
 function g_login_common_user( $user, $pass, &$error ) {
   global $g_config;
   $user = g_escape( $user );
@@ -344,7 +366,7 @@ function g_air_list( $token, $ai, $tag, $code, $page_no, $page_size ) {
   $token = g_escape( $token );
   $ai = g_escape( $ai );
   $tag = g_escape( $tag );
-  $code = g_escape( $code );
+  $code = g_escape( g_slug($code) );
   $page_no = intval( $page_no . '' );
   $page_size = intval( $page_size . '' );
   $sql = "set @v_token = ''; call ara.unescape('$token', @v_token); set @v_ai = ''; call ara.unescape('$ai', @v_ai); set @v_tag = ''; call ara.unescape('$tag', @v_tag); set @v_code = ''; call ara.unescape('$code', @v_code); set @v_page_no = $page_no; set @v_page_size = $page_size; call ara.air_list( @v_token, @v_ai, @v_tag, @v_code, @v_page_no, @v_page_size );";
@@ -425,6 +447,20 @@ function g_slug( $src ) {
       $tag .= '_';
     }
   }
+  while ( strpos( $tag, "__" ) !== false ) {
+    $tag = str_replace( "__", "_", $tag );
+  }
+  while ( strpos( $tag, "--" ) !== false ) {
+    $tag = str_replace( "--", "-", $tag );
+  }
+  if ( strlen( $tag ) === 0 ) return $tag;
+  if ( $tag[0] === '-' || $tag[0] === '_' ) {
+    $tag = substr( $tag, 1 );
+  }
+  if ( strlen( $tag ) === 0 ) return $tag;
+  if ( $tag[strlen($tag)-1] === '-' || $tag[strlen($tag)-1] === '_' ) {
+    $tag = substr( $tag, 0, strlen($tag) - 1 );
+  }
   return $tag;
 }
 
@@ -489,18 +525,6 @@ function g_split_air( $air, &$query, &$reply ) {
     if ( $idx_2 !== false ) {
       $query = trim( substr( $air, $idx + 6, $idx_2 - ($idx + 6) ) );
       $query = g_slug( $query );
-      while ( strpos( $query, "__" ) !== false ) {
-        $query = str_replace( "__", "_", $query );
-      }
-      while ( strpos( $query, "--" ) !== false ) {
-        $query = str_replace( "--", "-", $query );
-      }
-      if ( $query[0] === '-' || $query[0] === '_' ) {
-        $query = substr( $query, 1 );
-      }
-      if ( $query[strlen($query)-1] === '-' || $query[strlen($query)-1] === '_' ) {
-        $query = substr( $query, 0, strlen($query) - 1 );
-      }
       $reply = trim(substr( $air, $idx_2 + 3 ));
     }
   }
@@ -515,20 +539,31 @@ function g_fill_cache( $air ) {
     if ( $idx_2 !== false ) {
       $query = trim( substr( $air, $idx + 7, $idx_2 - ($idx + 7) ) );
       $query = g_slug( $query );
-      while ( strpos( $query, "__" ) !== false ) {
-        $query = str_replace( "__", "_", $query );
-      }
-      while ( strpos( $query, "--" ) !== false ) {
-        $query = str_replace( "--", "-", $query );
-      }
-      if ( $query[0] === '-' || $query[0] === '_' ) {
-        $query = substr( $query, 1 );
-      }
-      if ( $query[strlen($query)-1] === '-' || $query[strlen($query)-1] === '_' ) {
-        $query = substr( $query, 0, strlen($query) - 1 );
-      }
       $cache = '';
       $rs = g_air_cache( $query, $cache );
+      if ( $rs === false ) $cache = '';
+      $reply .= substr( $air, $start, $idx ) . $cache;
+      $start = $idx_2 + 3;
+    } else {
+      $start = $idx + 7;
+    }
+    $idx = strpos( $air, "```airc", $start );
+  }
+  $reply .= substr( $air, $start );
+  return $reply;
+}
+
+function g_fill_my_cache( $token, $air ) {
+  $reply = '';
+  $start = 0;
+  $idx = strpos( $air, "```airmc", $start );
+  while ( $idx !== false ) {
+    $idx_2 = strpos( $air, "```", $idx + 8 );
+    if ( $idx_2 !== false ) {
+      $query = trim( substr( $air, $idx + 8, $idx_2 - ($idx + 8) ) );
+      $query = g_slug( $query );
+      $cache = '';
+      $rs = g_air_my_cache( $token, $query, $cache );
       if ( $rs === false ) $cache = '';
       $reply .= substr( $air, $start, $idx ) . $cache;
       $start = $idx_2 + 3;
@@ -546,6 +581,7 @@ function g_take_air_google_ai_search( $token, $air, $ai, $tags ) {
   $reply = '';
   g_split_air( $air, $query, $reply );
   $reply = g_fill_cache( $reply );
+  $reply = g_fill_my_cache( $token, $reply );
   return g_save_air( $token, $ai, $tags, $query, $reply );
 }
 
@@ -554,6 +590,7 @@ function g_take_air_bing_copilot_search( $token, $air, $ai, $tags ) {
   $reply = '';
   g_split_air( $air, $query, $reply );
   $reply = g_fill_cache( $reply );
+  $reply = g_fill_my_cache( $token, $reply );
   return g_save_air( $token, $ai, $tags, $query, $reply );
 }
 
@@ -562,6 +599,7 @@ function g_take_air_chatgpt( $token, $air, $ai, $tags ) {
   $reply = '';
   g_split_air( $air, $query, $reply );
   $reply = g_fill_cache( $reply );
+  $reply = g_fill_my_cache( $token, $reply );
   return g_save_air( $token, $ai, $tags, $query, $reply );
 }
 
@@ -570,6 +608,7 @@ function g_take_air_others( $token, $air, $ai, $tags ) {
   $reply = '';
   g_split_air( $air, $query, $reply );
   $reply = g_fill_cache( $reply );
+  $reply = g_fill_my_cache( $token, $reply );
   return g_save_air( $token, $ai, $tags, $query, $reply );
 }
 
