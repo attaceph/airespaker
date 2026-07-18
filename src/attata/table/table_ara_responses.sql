@@ -18,7 +18,7 @@ create table ara_responses (
   code varchar(36) not null,
   tags varchar(4096) not null,
 
-  query longtext not null,
+  query varchar(4096) not null,
   reply longtext not null,
 
   created timestamp not null default current_timestamp,
