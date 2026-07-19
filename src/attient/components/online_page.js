@@ -44,7 +44,7 @@ const OnlinePage = {
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Entrance
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/><br/>
-<input v-show="!hide" type="button" class="online-button-2" @click="go_page('login')" value="Login" /> &nbsp; <input  v-show="!hide" type="button" class="online-button-2" @click="go_page('register')" value="Register" />
+<input v-show="!hide" type="button" class="online-button-2" @click="go_page('login')" value="Login" /> &nbsp; <input  v-show="!hide" type="button" class="online-button-2" @click="go_page('register')" value="Register" /> &nbsp; <input  v-show="!hide" type="button" class="online-button-2" @click="go_page('aircache')" value="AIRCache" />
 </div>
 <div v-show="hide">---------------------\|_\|-----------------------
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Comming Soon
@@ -59,6 +59,11 @@ const OnlinePage = {
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
 <div class="take-guide" v-show="hide"><div class='embed-container'><iframe src="https://www.youtube.com/embed/REesvvuEidE" frameborder='0' allowfullscreen></iframe></div></div>
 
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Initial Review
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
+
+<input v-show="hide" type="button" class="online-button-2" @click="go_page('aircache')" value="AIRCache" />
 </div>
 
   </div></div>
@@ -67,6 +72,7 @@ const OnlinePage = {
   <take_page v-show="online && page == 'take'" ref="take_page" @go_page="go_page" @set_token="set_token"></take_page>  
   <profile_page v-show="online && page == 'profile'" ref="profile_page" @go_page="go_page" @set_token="set_token"></profile_page>  
   <register_page v-show="online && page == 'register'" ref="register_page" @go_page="go_page" @set_token="set_token"></register_page>  
+  <aircache_page v-show="online && page == 'aircache'" ref="aircache_page" @go_page="go_page" @set_token="set_token"></aircache_page>  
 `,
   emits: [ 'update_online' ],
   data() {
@@ -81,6 +87,22 @@ const OnlinePage = {
   methods: {
     update_online( value ) {
       this.online = value;
+      
+      let uri = location + '';
+      uri = uri.replaceAll('https://airespaker.is-best.net', '').replaceAll('http://airespaker.is-best.net', '');
+      let idx = uri.indexOf('/c/');
+      if (idx === 0) {
+        uri = uri.substring(3);
+        let username = 'airespaker';
+        idx = uri.indexOf('/');
+        if (idx >= 0) {
+          username = uri.substring(0, idx);
+        }
+        if (this.page !== 'aircache') {
+          this.go_page('aircache');
+          this.$refs.aircache_page.setUsername(username);   
+        }
+      }
     },
     set_token( value ) {
       if (value === '' && this.token !== '') {
@@ -100,6 +122,8 @@ const OnlinePage = {
         this.$refs.profile_page.doPrepare(this.token);      
       } else if ( value == 'dashboard' ) {
         this.$refs.dashboard_page.doPrepare(this.token);      
+      } else if ( value == 'aircache' ) {
+        this.$refs.aircache_page.doPrepare(this.token);      
       }
       this.page = value;
     },

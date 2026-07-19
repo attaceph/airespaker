@@ -16,6 +16,15 @@
   color: black;
 }
 
+.md_h3 {
+  font-family: monospace;
+  font-size: 14px;
+  margin-top: 10px;
+  padding-bottom: 5px;
+  border-bottom: dotted 2px gainsboro;
+  color: black;
+}
+
 .md_bl {
   font-family: monospace;
   font-size: 12px;

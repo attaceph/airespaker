@@ -88,8 +88,14 @@ function gj_md2html_lnk_more( ln ) {
 }
 
 function gj_md2html_line( ln, lnks ) {
-  let idx = ln.indexOf('## ');
-  let idx_2 = ln.trim().indexOf('## ');
+  let idx = ln.indexOf('### ');
+  let idx_2 = ln.trim().indexOf('### ');
+  if ( idx >= 0 && idx_2 <= idx ) {
+    ln = '<div class="md_h3">' + gj_md2html_line_more(ln.substring(4), lnks) + '</div>';
+    return ln;
+  }
+  idx = ln.indexOf('## ');
+  idx_2 = ln.trim().indexOf('## ');
   if ( idx >= 0 && idx_2 <= idx ) {
     ln = '<div class="md_h2">' + gj_md2html_line_more(ln.substring(3), lnks) + '</div>';
     return ln;

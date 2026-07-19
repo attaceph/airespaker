@@ -22,7 +22,7 @@ const gv_dashboard_page_text = `=======_==========================_============
 const DashboardPage = {
   template: `<div class="dashboard-page"><div class="dashboard-page-inner">{{ dashboard_page_text }}
     
-<input type="button" class="dashboard-button-2" @click="doLogout" value="Logout" /> &nbsp; <input type="button" class="dashboard-button-2" @click="doProfile" value="Profile" /> &nbsp; <input type="button" class="dashboard-button-2" @click="doTake" value="Take AIR" />
+<input type="button" class="dashboard-button-2" @click="doLogout" value="Logout" /> &nbsp; <input type="button" class="dashboard-button-2" @click="doProfile" value="Profile" /> &nbsp; <input type="button" class="dashboard-button-2" @click="doTake" value="Take AIR" /> &nbsp; <input type="button" class="dashboard-button-2" @click="doAIRCache" value="AIRCache" />
 
 <br/><br/><br/>-Filtered by code ---|_|--( or by query )------<br/>
 <input type="text" class="dashboard-text" v-model="code" />&nbsp;<input type="button" class="dashboard-button" @click="doFilterByAI('', '')" value="Enter" />
@@ -211,6 +211,9 @@ const DashboardPage = {
     },
     doTake() {
       this.$emit( 'go_page', 'take' );
+    },
+    doAIRCache() {
+      this.$emit( 'go_page', 'aircache' );
     },
     doProfile() {
       this.$emit( 'go_page', 'profile' );
