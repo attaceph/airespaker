@@ -8,6 +8,8 @@
  *
  */
 
+set_time_limit(0);
+
 function g_text_get( $uri, &$ready ) {
   $host = @file_get_contents(__DIR__ . '/../host.txt');
   $ready = true;
@@ -31,7 +33,8 @@ function g_text_get( $uri, &$ready ) {
     $opts = [
       'http' => [
         'method' => 'GET',
-        'header' => "X-Pinggy-No-Screen: yes\r\n"
+        'header' => "X-Pinggy-No-Screen: yes\r\n",
+        'timeout' => 3600
       ]
     ];
     $context = stream_context_create( $opts );
@@ -66,7 +69,8 @@ function g_text_post( $uri, $data, &$ready ) {
       'http' => [
         'method' => 'POST',
         'header' => "X-Pinggy-No-Screen: yes\r\nContent-type: application/x-www-form-urlencoded\r\n",
-        'content' => http_build_query($data)
+        'content' => http_build_query($data),
+        'timeout' => 3600
       ]
     ];
     $context = stream_context_create( $opts );
