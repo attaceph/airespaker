@@ -60,6 +60,8 @@ retrieval, reference, and storage purposes.
 + Copy AI response to clipboard
 
 + Insert AI responses from either system's cache or user's cache by AI query
+
++ AIRCache chatbot
  
 + Filter & display AI responses:
   o By Reponse Code
