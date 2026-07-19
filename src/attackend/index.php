@@ -50,6 +50,18 @@ if ( $method === 'login' ) {
   } else {
     echo "Success: ", $result;
   }
+} else if ( $method === 'aircache' ) {
+  $username = g_param('username');
+  $code = g_param('code');
+  $page_no = g_param('page_no');
+  $page_size = g_param('page_size');
+  $result = g_aircache_list( $username, $code, $page_no, $page_size );
+  header('Content-Type: text/plain');
+  if ( $result === false ) {
+    echo "Error: Failed to get AIRCache list!";
+  } else {
+    echo "Success: ", $result;
+  }
 } else if ( $method === 'current_user' ) {
   $token = g_param('token');
   $result = g_current_user( $token );

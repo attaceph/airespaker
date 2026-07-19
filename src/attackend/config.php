@@ -43,7 +43,9 @@ $g_config = array(
  'ara.dbpass' => 'pass',
  'ara.tmpdir_rel' => true,
  'ara.tmpdir.o' => '/data/data/com.termux/files/home/ara/tmp',
- 'ara.tmpdir' => '/tmp'
+ 'ara.tmpdir' => '/tmp',
+
+ 'openrouter_ai_api_key' => '_____'
 
 );
 

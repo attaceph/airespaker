@@ -2,6 +2,8 @@
 global $g_config;
 require_once __DIR__ . '/config.php';
 
+set_time_limit(0);
+
 function g_param( $key ) {
   if ( isset( $_POST[ $key ] ) ) return $_POST[ $key ];
   if ( isset( $_GET[ $key ] ) ) return $_GET[ $key ];
@@ -376,7 +378,35 @@ function g_air_list( $token, $ai, $tag, $code, $page_no, $page_size ) {
   }
   $lines = explode( "\n", trim($text) );
   if ( count( $lines ) < 2 ) {
-    return "id\tquery\treply\tai_slug\tai_name\ttags";
+    return "id\tquery\treply\tai_slug\tai_name\ttags\tcode";
+  }
+  return $text;
+}
+
+function g_aircache_list( $username, $code, $page_no, $page_size ) {
+  global $g_config;
+  $username = g_escape( $username );
+  $query = $code;
+  $code = g_escape( g_slug($code) );
+  $page_no = intval( $page_no . '' );
+  $page_size = intval( $page_size . '' );
+  $sql = "set @v_username = ''; call ara.unescape('$username', @v_username); set @v_code = ''; call ara.unescape('$code', @v_code); set @v_page_no = $page_no; set @v_page_size = $page_size; call ara.aircache_list( @v_username, @v_code, @v_page_no, @v_page_size );";
+  $text = g_exec_common( $sql );
+  if ( $text === null ) {
+    return false;
+  }
+  $lines = explode( "\n", trim($text) );
+  if ( count( $lines ) < 2 ) {
+    $reply = '';
+    g_openrouter_ai( $query, $reply );
+    $reply = trim( $reply );
+    if ( $reply === '' ) {
+      return "id\tquery\treply\tai_slug\tai_name\ttags\tcode";
+    } else {
+      $output = "id\tquery\treply\tai_slug\tai_name\ttags\tcode";
+      $output .= "\n1\t" . g_slug($query) . "\t" . g_escape($reply) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug('google/gemma-4-26b-a4b-it:free') . "\t" . uniqid();
+      return $output;
+    }
   }
   return $text;
 }
@@ -610,6 +640,43 @@ function g_take_air_others( $token, $air, $ai, $tags ) {
   $reply = g_fill_cache( $reply );
   $reply = g_fill_my_cache( $token, $reply );
   return g_save_air( $token, $ai, $tags, $query, $reply );
+}
+
+function g_openrouter_ai( $query, &$reply ) {
+  global $g_config;
+  $curl_cmd = "/data/data/com.termux/files/usr/bin/curl";
+  $api_key = $g_config['openrouter_ai_api_key'];
+  $data = [
+    'model' => 'google/gemma-4-26b-a4b-it:free',
+    'messages' => [
+      [
+        'role' => 'user',
+        'content' => $query
+      ]
+    ],
+    'reasioning' => [
+      'enabled' => true
+    ]
+  ];
+  $reply = '';
+  $json = json_encode( $data );
+  $size = strlen( $json );
+  $url = 'https://openrouter.ai/api/v1/chat/completions';
+  $cmd = "$curl_cmd --connect-timeout 3600 --max-time 3600 -X POST \"$url\" -H \"Authorization: Bearer $api_key\" -H \"Content-Type: application/json\" -d '$json'";
+  $text = @shell_exec( $cmd );
+  if ( $text === null ) $text = '_';
+  if ( $text !== '_' ) {
+    $obj = json_decode( $text, true );
+    if (isset( $obj['created'])) {
+      if (isset( $obj['choices'])) {
+        $it = $obj['choices'][0];
+        if (isset($it['message'])) {
+          $reply = $it['message']['content'];
+          return;
+        }
+      }
+    }
+  }
 }
 
 ?>
