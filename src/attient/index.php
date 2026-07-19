@@ -31,6 +31,8 @@
   <link rel="stylesheet" href="/components/profile_page.css">
   <script src="/components/register_page.js"></script>
   <link rel="stylesheet" href="/components/register_page.css">
+  <script src="/components/aircache_page.js"></script>
+  <link rel="stylesheet" href="/components/aircache_page.css">
   <script>
 let gv_app = null;
 let go_enable_prelaunch = true;
@@ -62,7 +64,7 @@ function gj_unescape( sql ) {
 async function gj_text_get( uri, cr, cb ) {
   let url = '/proxy/text_get.php?cr=' + cr + '&uri=' + encodeURIComponent(uri); 
   try {
-    const response = await fetch(url);
+    const response = await fetch(url, { signal: AbortSignal.timeout(3600000) });
     const text = await response.text();
     cb( text );
   } catch (error) {
@@ -79,6 +81,7 @@ async function gj_text_post( uri, data, cr, cb ) {
   });
   try {
     const response = await fetch(url, {
+      signal: AbortSignal.timeout(3600000),
       method: 'POST',
       body: formData
     });
@@ -120,6 +123,7 @@ function gj_load() {
   v_app.component( 'take_page', TakePage );
   v_app.component( 'profile_page', ProfilePage );
   v_app.component( 'register_page', RegisterPage );
+  v_app.component( 'aircache_page', AIRCachePage );
   v_app.component( 'dashboard_page', DashboardPage );
   v_app.component( 'online_page', OnlinePage );
   gv_app = v_app.mount('#ge_app');
