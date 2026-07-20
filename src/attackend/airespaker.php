@@ -413,10 +413,17 @@ function g_aircache_list( $username, $code, $page_no, $page_size ) {
   $lines = explode( "\n", trim($text) );
   if ( count( $lines ) < 2 ) {
     $reply = '';
-    g_openrouter_ai( $query, $reply );
+    $oerror = '';
+    g_openrouter_ai( $query, $reply, $oerror );
     $reply = trim( $reply );
     if ( $reply === '' ) {
-      return "id\tquery\treply\tai_slug\tai_name\ttags\tcode";
+      if ( $oerror !== '' ) {
+         $output = "id\tquery\treply\tai_slug\tai_name\ttags\tcode";
+         $output .= "\n1\t" . g_slug($query) . "\t" . g_escape($oerror) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug('google/gemma-4-26b-a4b-it:free') . "\t" . uniqid();
+         return $output;
+      } else {
+        return "id\tquery\treply\tai_slug\tai_name\ttags\tcode";
+      }
     } else {
       $output = "id\tquery\treply\tai_slug\tai_name\ttags\tcode";
       $output .= "\n1\t" . g_slug($query) . "\t" . g_escape($reply) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug('google/gemma-4-26b-a4b-it:free') . "\t" . uniqid();
@@ -619,7 +626,8 @@ function g_fill_cache( $air ) {
           $token = g_login_ara();
           if ( $token !== false ) {
             $username = g_current_username( $token );
-            g_openrouter_ai( $raw_query, $cache );
+            $oerror = '';
+            g_openrouter_ai( $raw_query, $cache, $oerror );
             $cache = trim( $cache );
             if ( $cache !== '' ) {
               if ( !g_aircache_check( $username, $raw_query ) ) {
@@ -656,7 +664,8 @@ function g_fill_my_cache( $token, $air ) {
         $rs = g_air_my_cache( $token, $query, $cache );
         if ( $rs === false || trim($cache) === '' ) {
           $username = g_current_username( $token );
-          g_openrouter_ai( $raw_query, $cache );
+          $oerror = '';
+          g_openrouter_ai( $raw_query, $cache, $oerror );
           $cache = trim( $cache );
           if ( $cache !== '' ) {
             if ( !g_aircache_check( $username, $raw_query ) ) {
@@ -716,8 +725,9 @@ function g_take_air_others( $token, $air, $ai, $tags ) {
   return g_save_air( $token, $ai, $tags, $query, $reply );
 }
 
-function g_openrouter_ai( $query, &$reply ) {
+function g_openrouter_ai( $query, &$reply, &$error ) {
   global $g_config;
+  $error = '';
   $curl_cmd = "/data/data/com.termux/files/usr/bin/curl";
   $api_key = $g_config['openrouter_ai_api_key'];
   $data = [
@@ -741,7 +751,11 @@ function g_openrouter_ai( $query, &$reply ) {
   if ( $text === null ) $text = '_';
   if ( $text !== '_' ) {
     $obj = json_decode( $text, true );
-    if (isset( $obj['created'])) {
+    if ( isset( $obj['error'] ) ) {
+      if ( isset( $obj['error']['message'] ) ) {
+        $error = $obj['error']['message'];
+      }
+    } else if (isset( $obj['created'])) {
       if (isset( $obj['choices'])) {
         $it = $obj['choices'][0];
         if (isset($it['message'])) {
