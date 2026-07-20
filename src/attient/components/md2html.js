@@ -8,6 +8,8 @@
  */
 
 function gj_md2html( md ) {
+  md = gj_md2html_latex_doc( md );
+  md = md.trim();
   let ret = gj_md2html_clnk( md );
   let fpos = ret['fpos'];
   let lnks = ret['lnks'];
@@ -24,6 +26,25 @@ function gj_md2html( md ) {
   }
   html = gj_md2html_table( html );
   return html;
+}
+
+function gj_md2html_latex_doc( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```ltx', start );
+  while (idx >= 0) {
+    let idx_2 = src.indexOf('```', idx + 6);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 6;  
+    } else {
+      tag += src.substring( start, idx ) + gj_md2html_latex_2( src.substring(idx + 6, idx_2 ) );
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```ltx', start );
+  }
+  tag += src.substring(start);
+  return tag;
 }
 
 function gj_md2html_nohtml( src ) {
@@ -106,10 +127,10 @@ function gj_md2html_table( md ) {
       in_table = true;
     }
     let nln = '|';
-    for (var j = 0; j < fields.length; j++ ) {
-      if (nln !== '|') nln += '|';
-      nln += gj_md2html_pad(fields[j], table[mark][j+2], '&nbsp;');
-    }
+      for (var j = 0; j < fields.length; j++ ) {
+        if (nln !== '|') nln += '|';
+        nln += gj_md2html_pad(fields[j], table[mark][j+2], '&nbsp;');
+      }
     html += nln;
   }  
   return html;
@@ -315,5 +336,75 @@ function gj_md2html_line_more_3( ln ) {
     idx = ln.indexOf('*', start);
   }
   nln += ln.substring(start);
+  return gj_md2html_line_more_4( nln );
+}
+
+function gj_md2html_latex( text ) {
+  try {
+    text = text.replaceAll("\\text", "\\textrm");
+    var generator = new latexjs.HtmlGenerator({ hyphenate: false })
+    generator = latexjs.parse(text, { generator: generator })
+    document.head.appendChild(generator.stylesAndScripts("https://cdn.jsdelivr.net/npm/latex.js/dist/"))
+    const tempContainer = document.createElement('div');
+    tempContainer.appendChild(generator.domFragment().cloneNode(true));
+    const htmlString = tempContainer.innerHTML;
+    return htmlString;
+  } catch (e) {
+    return e + '';
+  }
+}
+
+function gj_md2html_latex_2( text ) {
+  try {
+    var generator = new latexjs.HtmlGenerator({ hyphenate: false })
+    generator = latexjs.parse(text, { generator: generator })
+    document.head.appendChild(generator.stylesAndScripts("https://cdn.jsdelivr.net/npm/latex.js/dist/"))
+    const tempContainer = document.createElement('div');
+    tempContainer.appendChild(generator.domFragment().cloneNode(true));
+    const htmlString = tempContainer.innerHTML;
+    return htmlString;
+  } catch (e) {
+    return e + '';
+  }
+}
+
+function gj_md2html_line_more_4( ln ) {
+  let nln = '';
+  let start = 0;
+  let idx = ln.indexOf('$$', start);
+  while ( idx >= 0 ) {
+    let idx_2 = ln.indexOf('$$', idx + 2 );
+    if ( idx_2 < 0 ) {
+      nln += ln.substring( start, idx + 2 );
+      start = idx + 2;
+      idx = ln.indexOf('$$', start);
+      continue;
+    }
+    nln += ln.substring(start, idx ) + gj_md2html_latex( ln.substring(idx + 2, idx_2) );
+    start = idx_2 + 2;
+    idx = ln.indexOf('$$', start);
+  }
+  nln += ln.substring(start);
+  return gj_md2html_line_more_5( nln );
+}
+
+function gj_md2html_line_more_5( ln ) {
+  let nln = '';
+  let start = 0;
+  let idx = ln.indexOf('$', start);
+  while ( idx >= 0 ) {
+    let idx_2 = ln.indexOf('$', idx + 1 );
+    if ( idx_2 < 0 ) {
+      nln += ln.substring( start, idx + 1 );
+      start = idx + 2;
+      idx = ln.indexOf('$', start);
+      continue;
+    }
+    nln += ln.substring(start, idx ) + gj_md2html_latex( ln.substring(idx + 1, idx_2) );
+    start = idx_2 + 1;
+    idx = ln.indexOf('$', start);
+  }
+  nln += ln.substring(start);
   return nln;
 }
+
