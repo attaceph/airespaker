@@ -31,7 +31,7 @@ const AIRCachePage = {
 <br/>-----------------------------------------------<br/></div>
 
 <br/>- Query -------------|_|-----------------------<br/>
-<input type="text" class="aircache-text" v-model="code" />&nbsp;<input type="button" class="aircache-button" @click="doFilter" value="Enter" />
+<input type="text" class="aircache-text" v-model="code" />&nbsp;<input type="button" class="aircache-button" @click="doFilter" value="Enter" />&nbsp;<input type="button" class="aircache-button" @click="doCopyURI" value="C" />&nbsp;<input type="button" class="aircache-button" @click="doCopyShotURI" value="S" />
 <br/>-----------------------------------------------<br/>
 
 <div v-show="message != ''" class="aircache-result"><br/>- Results -----------|_|-----------------------<br/>
@@ -59,6 +59,7 @@ const AIRCachePage = {
       username: 'airespaker',
       username_fixed: false,
       message: '',
+      fullable: false,
       air_list_ai: [],
       air_list_ai_slug: '',
       air_list_ai_tag: '',
@@ -68,10 +69,24 @@ const AIRCachePage = {
     };
   },
   methods: {
+    doCopyURI() {
+      let uri = 'https://airespaker.is-best.net/c/' + this.username + '/?q=' + encodeURIComponent(this.code);
+      navigator.clipboard.writeText(uri);      
+    },
+    doCopyShotURI() {
+      let uri = 'https://airespaker.is-best.net/c/' + this.username + '/?q=' + encodeURIComponent(this.code);
+      let uri2 = 'https://airespaker.is-best.net/proxy/screenshot.php?uri=' + encodeURIComponent(uri);
+      navigator.clipboard.writeText(uri2);      
+    },
     setUsername( username ) {
       this.username = username;
       this.code = 'What is AI?';
       this.username_fixed = true;
+    },
+    setQuery( query ) {
+      this.code = query;
+      this.fullable = true;
+      this.doFilter();
     },
     doCopyAIR( item ) {
       let reply = item['raw_reply'];
@@ -95,6 +110,7 @@ const AIRCachePage = {
       this.doFilter();
     },
     doPrepare(token) {
+      this.fullable = false;
       this.username = 'airespaker';
       this.code = 'What is AI?';
       //this.username_fixed = false;
@@ -144,7 +160,7 @@ const AIRCachePage = {
               tags.push(pt);
             }
             let code = fields[6].trim();
-            let item = { 'tags': tags, 'code': code, 'raw_reply': raw_reply, 'full': false, 'no': no, 'id': id, 'query': query, 'reply': reply, 'ai_slug': ai_slug, 'ai_name': ai_name };
+            let item = { 'tags': tags, 'code': code, 'raw_reply': raw_reply, 'full': v_this.fullable, 'no': no, 'id': id, 'query': query, 'reply': reply, 'ai_slug': ai_slug, 'ai_name': ai_name };
             list.push( item );
           }
           v_this.air_list_ai = list;

@@ -90,6 +90,19 @@ const OnlinePage = {
       
       let uri = location + '';
       uri = uri.replaceAll('https://airespaker.is-best.net', '').replaceAll('http://airespaker.is-best.net', '');
+      let qry = '';
+      let lidx = uri.lastIndexOf('/');
+      if (lidx >= 0) {
+        lidx = uri.indexOf('q=', lidx + 1);
+        if (lidx >= 0) {
+          qry = uri.substring(lidx + 2);
+          lidx = qry.indexOf('&');
+          if (lidx >= 0) {
+            qry = qry.substring(0, lidx);
+          }
+          qry = decodeURIComponent(qry);
+        }
+      }
       let idx = uri.indexOf('/c/');
       if (idx === 0) {
         uri = uri.substring(3);
@@ -101,6 +114,9 @@ const OnlinePage = {
         if (this.page !== 'aircache') {
           this.go_page('aircache');
           this.$refs.aircache_page.setUsername(username);   
+          if (qry.length > 0) {
+            this.$refs.aircache_page.setQuery(qry);   
+          }
         }
       }
     },
