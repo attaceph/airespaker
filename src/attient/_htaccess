@@ -25,6 +25,7 @@ RewriteCond %{REQUEST_URI} !^/components/aircache_page\.css(.*)$
 RewriteCond %{REQUEST_URI} !^/proxy/sample\.php(.*)$
 RewriteCond %{REQUEST_URI} !^/proxy/text_get\.php(.*)$
 RewriteCond %{REQUEST_URI} !^/proxy/text_post\.php(.*)$
+RewriteCond %{REQUEST_URI} !^/proxy/screenshot\.php(.*)$
 
 RewriteCond %{REQUEST_URI} !^/host\.txt(.*)$
 RewriteRule ^(.*)$ /index.php?$1 [NC,L]
