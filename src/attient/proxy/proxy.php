@@ -81,4 +81,48 @@ function g_text_post( $uri, $data, &$ready ) {
   return $text;
 }
 
+function g_screenshot( $url, &$error ) {
+  $width = 1280;
+  $height = $width * 2;
+  $url2 = "https://api.microlink.io?screenshot&viewport.width=" . $width . "&viewport.height=" . $height . "&waitForSelector=" . urlencode('.aircache-air-list-item-text') . "&url=" . urlencode( $url . '&uid=' . uniqid() );
+  $opts = [
+    'http' => [
+      'method' => 'GET',
+      'timeout' => 3600
+    ]
+  ];
+  $context = stream_context_create( $opts );
+  $text = @file_get_contents( $url2, false, $context );
+  if ( $text === null ) {
+    $error = 'Failed to get web page!';
+    return false;
+  }
+  if ( strpos( $text, '{' ) !== false && strpos( $text, '}' ) !== false ) {
+    $obj = json_decode( $text, true );
+    if ( isset( $obj['status'] ) ) {
+      if ( $obj['status'] === 'success' ) {
+        if ( isset( $obj['data'] ) ) {
+          if ( isset( $obj['data']['screenshot'] ) ) {
+            if ( isset( $obj['data']['screenshot']['url'] ) ) {
+              return $obj['data']['screenshot']['url'];
+            } else {
+              $error = 'Invalid results from screenshot capturer! ' . $text;
+            }
+          } else {
+            $error = 'Invalid results from screenshot capturer! ' . $text;
+          }
+        } else {
+          $error = 'Invalid results from screenshot capturer! ' . $text;      
+        }
+      } else {
+        $error = 'Invalid results from screenshot capturer! ' . $text;
+      }
+    } else {
+      $error = 'Invalid results from screenshot capturer! ' . $text;
+    }
+  } else {
+    $error = 'Invalid results from screenshot capturer! ' . $text;
+  }
+  return false;
+}
 ?>
