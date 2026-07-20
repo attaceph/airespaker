@@ -355,6 +355,21 @@ function g_current_user( $token ) {
   return $text;
 }
 
+function g_current_username( $token ) {
+  global $g_config;
+  $token = g_escape( $token );
+  $sql = "set @v_token = ''; call ara.unescape('$token', @v_token); set @v_user_id = -1; set @v_username = ''; set @v_name = '', set @v_email = ''; set @v_phone = ''; call ara.`current_user`( @v_token, @v_user_id, @v_username, @v_name, @v_email, @v_phone ); set @v_user_demo = 0; call ara.has_right( @v_token, 'user_demo', @v_user_demo); select @v_username as `username`;";
+  $text = g_exec_common( $sql );
+  if ( $text === null ) {
+    return false;
+  }
+  $lines = explode( "\n", trim($text) );
+  if ( count( $lines ) < 2 ) {
+    return false;
+  }
+  return trim( $lines[1] );
+}
+
 function g_chpwd( $token, $password ) {
   global $g_config;
   $token = g_escape( $token );
@@ -405,10 +420,37 @@ function g_aircache_list( $username, $code, $page_no, $page_size ) {
     } else {
       $output = "id\tquery\treply\tai_slug\tai_name\ttags\tcode";
       $output .= "\n1\t" . g_slug($query) . "\t" . g_escape($reply) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug('google/gemma-4-26b-a4b-it:free') . "\t" . uniqid();
+
+      if ( !g_aircache_check( $username, $query ) ) {
+        $token = g_login_ara();
+        if ( $token !== false ) {
+          g_save_air( $token, 'others', 'pattern', g_slug($query), $reply );
+        }
+        g_logout( $token );
+      }
+
       return $output;
     }
   }
   return $text;
+}
+
+function g_aircache_check( $username, $code ) {
+  global $g_config;
+  $username = g_escape( $username );
+  $code = g_escape( g_slug($code) );
+  $sql = "set @v_username = ''; call ara.unescape('$username', @v_username); set @v_code = ''; call ara.unescape('$code', @v_code); set @v_find = 0; call ara.aircache_check( @v_username, @v_code, @v_find ); select @v_find;";
+  $text = g_exec_common( $sql );
+  if ( $text === null ) {
+    return false;
+  }
+  $lines = explode( "\n", trim($text) );
+  if ( count( $lines ) < 2 ) {
+    return false;
+  }
+  $ln = trim( $lines[1] );
+  if ( $ln === '1' ) return true;
+  return false;
 }
 
 function g_tag_list( $token, $page_no, $page_size ) {
@@ -568,10 +610,26 @@ function g_fill_cache( $air ) {
     $idx_2 = strpos( $air, "```", $idx + 7 );
     if ( $idx_2 !== false ) {
       $query = trim( substr( $air, $idx + 7, $idx_2 - ($idx + 7) ) );
-      $query = g_slug( $query );
+      $raw_query = $query . '';
       $cache = '';
-      $rs = g_air_cache( $query, $cache );
-      if ( $rs === false ) $cache = '';
+      if ( $raw_query !== '' ) {
+        $query = g_slug( $query );
+        $rs = g_air_cache( $query, $cache );
+        if ( $rs === false || trim( $cache ) === '' ) {
+          $token = g_login_ara();
+          if ( $token !== false ) {
+            $username = g_current_username( $token );
+            g_openrouter_ai( $raw_query, $cache );
+            $cache = trim( $cache );
+            if ( $cache !== '' ) {
+              if ( !g_aircache_check( $username, $raw_query ) ) {
+                g_save_air( $token, 'others', 'pattern', g_slug($raw_query), $cache );
+              }
+            }
+            g_logout( $token );
+          }
+        }
+      }
       $reply .= substr( $air, $start, $idx ) . $cache;
       $start = $idx_2 + 3;
     } else {
@@ -591,10 +649,26 @@ function g_fill_my_cache( $token, $air ) {
     $idx_2 = strpos( $air, "```", $idx + 8 );
     if ( $idx_2 !== false ) {
       $query = trim( substr( $air, $idx + 8, $idx_2 - ($idx + 8) ) );
-      $query = g_slug( $query );
+      $raw_query = $query . '';
       $cache = '';
-      $rs = g_air_my_cache( $token, $query, $cache );
-      if ( $rs === false ) $cache = '';
+      if ( $raw_query !== '' ) {
+        $query = g_slug( $query );
+        $rs = g_air_my_cache( $token, $query, $cache );
+        if ( $rs === false || trim($cache) === '' ) {
+          $username = g_current_username( $token );
+          g_openrouter_ai( $raw_query, $cache );
+          $cache = trim( $cache );
+          if ( $cache !== '' ) {
+            if ( !g_aircache_check( $username, $raw_query ) ) {
+              $token = g_login_ara();
+              if ( $token !== false ) {
+                g_save_air( $token, 'others', 'pattern', g_slug($raw_query), $cache );
+              }
+              g_logout( $token );
+            }
+          }
+        }
+      }
       $reply .= substr( $air, $start, $idx ) . $cache;
       $start = $idx_2 + 3;
     } else {
