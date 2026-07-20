@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="/components/register_page.css">
   <script src="/components/aircache_page.js"></script>
   <link rel="stylesheet" href="/components/aircache_page.css">
+  <script src="https://cdn.jsdelivr.net/npm/latex.js/dist/latex.js"></script>
   <script>
 let gv_app = null;
 let go_enable_prelaunch = true;
