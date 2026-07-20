@@ -78,10 +78,13 @@ const AIRCachePage = {
       let uri2 = 'https://airespaker.is-best.net/proxy/screenshot.php?uri=' + encodeURIComponent(uri);
       navigator.clipboard.writeText(uri2);      
     },
-    setUsername( username ) {
+    setUsername( username, fetching = true ) {
       this.username = username;
-      this.code = 'What is AI?';
+      this.code = 'Which queries are in cache?';
       this.username_fixed = true;
+      if (fetching) {
+        this.doFilter();      
+      }
     },
     setQuery( query ) {
       this.code = query;
@@ -112,7 +115,7 @@ const AIRCachePage = {
     doPrepare(token) {
       this.fullable = false;
       this.username = 'airespaker';
-      this.code = 'What is AI?';
+      this.code = 'Which queries are in cache?';
       //this.username_fixed = false;
       this.token = token;
       let v_this = this;

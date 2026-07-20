@@ -113,9 +113,11 @@ const OnlinePage = {
         }
         if (this.page !== 'aircache') {
           this.go_page('aircache');
-          this.$refs.aircache_page.setUsername(username);   
           if (qry.length > 0) {
+            this.$refs.aircache_page.setUsername(username, false);   
             this.$refs.aircache_page.setQuery(qry);   
+          } else {
+            this.$refs.aircache_page.setUsername(username, true);   
           }
         }
       }
