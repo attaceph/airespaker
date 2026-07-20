@@ -111,11 +111,21 @@ const TakePage = {
     },
     doTake() {
       let v_this = this;
+      let ai = 'Other AIs';
+      if (this.machine == 'google-ai-search') {
+        ai = 'Google AI Search';
+      } else if (this.machine == 'bing-copilot-search') {
+        ai = 'Bing Copilot Search';
+      } else if (this.machine == 'chatgpt') {
+        ai = 'ChatGPT';
+      }
+      v_this.message = "\n" + 'Saving AI response from [ ' + ai + ' ] ...' + "\n";
       gj_text_post( '/airespaker/?method=take', {'token': this.token, 'machine': this.machine, 'query': this.query, 'tags': this.tags}, 'n', function( text ) {
         if ( text.indexOf('Success:') >= 0 ) {
           let data = text.substring(8).trim();
           //v_this.message = "\n" + data + "\n";
           //v_this.$emit( 'set_token', token );
+          v_this.message = '';
           v_this.$emit( 'go_page', 'dashboard' );
         } else if ( text.indexOf('Error:') >= 0) {
           let msg = text.substring(6).trim();

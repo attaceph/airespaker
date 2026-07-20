@@ -137,20 +137,7 @@ const DashboardPage = {
           v_this.ais_list = list;
         }
       });      
-      gj_text_get( '/airespaker/?method=all_tags&token=' + encodeURIComponent(this.token), 'n', function( text ) {
-        if ( text.indexOf('Success:') >= 0 ) {
-          let data = text.substring(8).trim();
-          let lines = data.split(",");
-          let list = [];
-          for ( var i = 0; i < lines.length; i++ ) {
-            let ln = lines[i].trim();
-            if (ln === '') continue;
-            list.push(ln);
-          }
-          v_this.all_tags = list;
-          v_this.all_tags_show = 'yes';
-        }
-      });      
+      this.doUpdateAllTags();
     },
     doFilterByAI(ai, tag = '') {
       this.air_list_ai_slug = ai;
@@ -199,10 +186,28 @@ const DashboardPage = {
         }
       });
     },
+    doUpdateAllTags() {
+      let v_this = this;
+      gj_text_get( '/airespaker/?method=all_tags&token=' + encodeURIComponent(this.token), 'n', function( text ) {
+        if ( text.indexOf('Success:') >= 0 ) {
+          let data = text.substring(8).trim();
+          let lines = data.split(",");
+          let list = [];
+          for ( var i = 0; i < lines.length; i++ ) {
+            let ln = lines[i].trim();
+            if (ln === '') continue;
+            list.push(ln);
+          }
+          v_this.all_tags = list;
+          v_this.all_tags_show = 'yes';
+        }
+      });          
+    },
     doDeleteAIR(code) {
       let v_this = this;
       gj_text_post( '/airespaker/?method=delete_air', { 'token': this.token, 'code': code }, 'n', function( text ) {
         v_this.doFilterByAI(v_this.air_list_ai_slug, v_this.air_list_ai_tag);
+        v_this.doUpdateAllTags();
       });
     },
     doLogout() {

@@ -132,3 +132,10 @@
   margin-bottom: 20px;
 }
 
+.aircache-result {
+  font-family: monospace;
+  font-size: 14px;
+  color: red;
+  background-color: transparent !important;
+}
+

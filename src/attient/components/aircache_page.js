@@ -34,6 +34,9 @@ const AIRCachePage = {
 <input type="text" class="aircache-text" v-model="code" />&nbsp;<input type="button" class="aircache-button" @click="doFilter" value="Enter" />
 <br/>-----------------------------------------------<br/>
 
+<div v-show="message != ''" class="aircache-result"><br/>- Results -----------|_|-----------------------<br/>
+{{ message }}<br/>-----------------------------------------------<br/><br/></div>
+
 <div class="aircache-air-list" v-show="air_list_ai_show == 'yes'">
   <div class="aircache-air-list-pagelist" v-show="air_list_ai_show == 'yes'">
 <input type="button" class="aircache-button-2" value="&lt;&lt;" v-on:click="doAIRListBack" /> &nbsp; [ {{ air_list_ai_page_no }} ] &nbsp; <input type="button" class="aircache-button-2" value="&gt;&gt;" v-on:click="doAIRListNext" />
@@ -55,6 +58,7 @@ const AIRCachePage = {
       code: '',
       username: 'airespaker',
       username_fixed: false,
+      message: '',
       air_list_ai: [],
       air_list_ai_slug: '',
       air_list_ai_tag: '',
@@ -108,6 +112,7 @@ const AIRCachePage = {
       let v_page_size = this.air_list_ai_page_size;
       this.air_list_ai = [];
       this.air_list_ai_show = 'no';
+      this.message = "\n" + 'Taking AI response from AIRCache or directly from AI ...' + "\n";
       gj_text_post( '/airespaker/?method=aircache', { 'page_no': v_page_no, 'page_size': v_page_size,  'code': this.code, 'username': this.username }, 'n', function( text ) {
         if ( text.indexOf('Success:') >= 0 ) {
           let data = text.substring(8).trim();
@@ -144,6 +149,7 @@ const AIRCachePage = {
           }
           v_this.air_list_ai = list;
           v_this.air_list_ai_show = 'yes';
+          v_this.message = '';
         }
       });
     },
