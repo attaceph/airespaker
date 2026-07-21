@@ -132,7 +132,7 @@ const AIRCachePage = {
       this.air_list_ai = [];
       this.air_list_ai_show = 'no';
       this.message = "\n" + 'Taking AI response from AIRCache or directly from AI ...' + "\n";
-      gj_text_post( '/airespaker/?method=aircache', { 'page_no': v_page_no, 'page_size': v_page_size,  'code': this.code, 'username': this.username }, 'n', function( text ) {
+      gj_text_post( '/airespaker/?method=aircache', { 'page_no': v_page_no, 'page_size': v_page_size,  'code': this.code, 'username': this.username, 'token': this.token }, 'n', function( text ) {
         if ( text.indexOf('Success:') >= 0 ) {
           let data = text.substring(8).trim();
           let lines = data.split("\n");
@@ -169,6 +169,7 @@ const AIRCachePage = {
           v_this.air_list_ai = list;
           v_this.air_list_ai_show = 'yes';
           v_this.message = '';
+          hljs.highlightAll();
         }
       });
     },

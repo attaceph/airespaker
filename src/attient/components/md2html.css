@@ -54,3 +54,74 @@
   font-size: 7px;
   border-radius: 50%;
 }
+
+.language-python {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-java {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-css {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-html {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-javascript {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-php {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-unknown {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+

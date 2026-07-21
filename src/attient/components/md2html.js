@@ -9,6 +9,13 @@
 
 function gj_md2html( md ) {
   md = gj_md2html_latex_doc( md );
+  md = gj_md2html_code_python( md );
+  md = gj_md2html_code_javascript( md );
+  md = gj_md2html_code_java( md );
+  md = gj_md2html_code_html( md );
+  md = gj_md2html_code_css( md );
+  md = gj_md2html_code_php( md );
+  md = gj_md2html_code_unknown( md );
   md = md.trim();
   let ret = gj_md2html_clnk( md );
   let fpos = ret['fpos'];
@@ -25,6 +32,7 @@ function gj_md2html( md ) {
     html += gj_md2html_line(ln, lnks);
   }
   html = gj_md2html_table( html );
+  html = html.replaceAll('_._lt_._', '<').replaceAll('_._gt_._', '>');
   return html;
 }
 
@@ -42,6 +50,176 @@ function gj_md2html_latex_doc( src ) {
       start = idx_2 + 3;
     }
     idx = src.indexOf( '```ltx', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_python( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```python', start );
+  while (idx >= 0) {
+    let idx_2 = src.indexOf('```', idx + 9);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 9;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx + 9, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'python' }
+      ).value;
+      tag += src.substring( start, idx ) + '<pre><code class="language-python">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```python', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_php( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```php', start );
+  while (idx >= 0) {
+    let idx_2 = src.indexOf('```', idx + 6);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 6;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx + 6, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'php' }
+      ).value;
+      tag += src.substring( start, idx ) + '<pre><code class="language-python">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```php', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_java( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```java', start );
+  while (idx >= 0) {
+    let idx_2 = src.indexOf('```', idx + 7);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 7;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx + 7, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'java' }
+      ).value;
+      tag += src.substring( start, idx ) + '<pre><code class="language-java">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```java', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_html( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```html', start );
+  while (idx >= 0) {
+    let idx_2 = src.indexOf('```', idx + 7);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 7;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx + 7, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'html' }
+      ).value + '';
+      tag += src.substring( start, idx ) + '<pre><code class="language-html">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```html', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_javascript( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```javascript', start );
+  while (idx >= 0) {
+    let idx_2 = src.indexOf('```', idx + 13);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 13;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx + 13, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'javascript' }
+      ).value + '';
+      tag += src.substring( start, idx ) + '<pre><code class="language-javascript">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```javascript', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_css( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```css', start );
+  while (idx >= 0) {
+    let idx_2 = src.indexOf('```', idx + 6);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 6;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx + 6, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'css' }
+      ).value;
+      tag += src.substring( start, idx ) + '<pre><code class="language-css">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```css', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_unknown( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```', start );
+  while (idx >= 0) {
+    let idx_b = src.indexOf("\n", idx + 3);
+    if (idx_b < 0) {
+      idx_b = idx + 3;
+    } else {
+      idx_b++;
+    }
+    let idx_2 = src.indexOf('```', idx_b);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx_b;  
+    } else {
+    /*
+      const highlightedCode = hljs.highlight(
+        src.substring(idx_b, idx_2 ),
+        { language: 'auto' }
+      ).value;
+      */
+      const highlightedCode = src.substring(idx_b, idx_2 );
+      tag += src.substring( start, idx ) + '<pre><code class="language-unknown">' + highlightedCode + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```', start );
   }
   tag += src.substring(start);
   return tag;
@@ -168,8 +346,11 @@ function gj_md2html_lnk_more( ln ) {
   let ret = { 'ln': '', 'lnks': {} };
   let nln = '';
   let start = 0;
+  let start_2 = 0;
   let idx = ln.indexOf('[', start);
   while ( idx >= 0 ) {
+    let title = '';
+    let url = '';
     let idx_2 = ln.indexOf(']', idx );
     if ( idx_2 < 0 ) {
       nln += ln.substring( start, idx + 1 );
@@ -179,27 +360,28 @@ function gj_md2html_lnk_more( ln ) {
     }
     let idx_3 = ln.indexOf('(', idx_2 );
     if ( idx_3 < 0 ) {
-      nln += ln.substring( start, idx_2 + 1 );
-      start = idx_2 + 1;
-      idx = ln.indexOf('[', start);
-      continue;
+      title = ln.substring( idx + 1, idx_2 );
+      url = ln.substring( idx_2 + 1 ).trim();
+      start_2 = idx_2 + 1;
+    } else {
+      let idx_4 = ln.indexOf(')', idx_3 );
+      if ( idx_4 < 0 ) {
+        start_2 = idx_3 + 1;
+        title = ln.substring( idx + 1, idx_2 );
+        url = ln.substring( idx_3 + 1 ).trim();
+      } else {
+        title = ln.substring( idx + 1, idx_2 );
+        url = ln.substring( idx_3 + 1, idx_4 ).trim();
+        start_2 = idx_4 + 1;
+      }
     }
-    let idx_4 = ln.indexOf(')', idx_3 );
-    if ( idx_4 < 0 ) {
-      nln += ln.substring( start, idx_3 + 1 );
-      start = idx_3 + 1;
-      idx = ln.indexOf('[', start);
-      continue;
-    }
-    let title = ln.substring( idx + 1, idx_2 );
-    let url = ln.substring( idx_3 + 1, idx_4 ).trim();
     if (url.indexOf('https://') === 0 || url.indexOf('http://') === 0) {
       let num = parseInt(title);
       if ( title.trim() == num + '' ) {
         ret['lnks'][num+''] = url;      
       }
       nln += ln.substring( start, idx ) + '<a class="md-link" target="_blank" href="' + url + '">' + title + '</a>';
-      start = idx_4 + 1;
+      start = start_2;
       idx = ln.indexOf('[', start);
     } else {
        nln += ln.substring( start, idx + 1);
@@ -243,8 +425,11 @@ function gj_md2html_line( ln, lnks ) {
 function gj_md2html_line_more( ln, lnks ) {
   let nln = '';
   let start = 0;
+  let start_2 = 0;
   let idx = ln.indexOf('[', start);
   while ( idx >= 0 ) {
+    let title = '';
+    let url = '';
     let idx_2 = ln.indexOf(']', idx );
     if ( idx_2 < 0 ) {
       nln += ln.substring( start, idx + 1 );
@@ -254,23 +439,24 @@ function gj_md2html_line_more( ln, lnks ) {
     }
     let idx_3 = ln.indexOf('(', idx_2 );
     if ( idx_3 < 0 ) {
-      nln += ln.substring( start, idx_2 + 1 );
-      start = idx_2 + 1;
-      idx = ln.indexOf('[', start);
-      continue;
+      title = ln.substring( idx + 1, idx_2 );
+      url = ln.substring( idx_2 + 1 ).trim();
+      start_2 = idx_2 + 1;
+    } else {
+      let idx_4 = ln.indexOf(')', idx_3 );
+      if ( idx_4 < 0 ) {
+        start_2 = idx_3 + 1;
+        title = ln.substring( idx + 1, idx_2 );
+        url = ln.substring( idx_3 + 1 ).trim();
+      } else {
+        title = ln.substring( idx + 1, idx_2 );
+        url = ln.substring( idx_3 + 1, idx_4 ).trim();
+        start_2 = idx_4 + 1;
+      }
     }
-    let idx_4 = ln.indexOf(')', idx_3 );
-    if ( idx_4 < 0 ) {
-      nln += ln.substring( start, idx_3 + 1 );
-      start = idx_3 + 1;
-      idx = ln.indexOf('[', start);
-      continue;
-    }
-    let title = ln.substring( idx + 1, idx_2 );
-    let url = ln.substring( idx_3 + 1, idx_4 ).trim();
     if (url.indexOf('https://') === 0 || url.indexOf('http://') === 0) {
       nln += ln.substring( start, idx ) + '<a class="md-link" target="_blank" href="' + url + '">' + title + '</a>';
-      start = idx_4 + 1;
+      start = start_2;
     } else {
       nln += ln.substring( start, idx + 1 );
       start = idx + 1;
@@ -290,6 +476,9 @@ function gj_md2html_line_more( ln, lnks ) {
         if ( lnks[n] !== undefined ) {
           if (ntmp != '') ntmp += ' , ';
           ntmp += '<a class="md-link" target="_blank" href="' + lnks[n] + '">' + n + '</a>';
+        } else {
+          if (ntmp != '') ntmp += ' , ';
+          ntmp += n;        
         }
       }
       ntmp = '[ ' + ntmp + ' ]';
