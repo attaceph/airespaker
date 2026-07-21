@@ -25,3 +25,6 @@
 \. ./procedure/api/procedure_api_delete_air.sql
 \. ./procedure/api/procedure_api_air_cache.sql
 \. ./procedure/api/procedure_api_aircache_list.sql
+\. ./procedure/api/procedure_api_aircache_check.sql
+\. ./procedure/api/procedure_api_update_credits.sql
+\. ./procedure/api/procedure_api_read_credits.sql

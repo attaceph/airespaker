@@ -30,3 +30,6 @@ grant execute on procedure ara.report to 'ara'@'%';
 grant execute on procedure ara.delete_air to 'ara'@'%';
 grant execute on procedure ara.air_cache to 'ara'@'%';
 grant execute on procedure ara.aircache_list to 'ara'@'%';
+grant execute on procedure ara.aircache_check to 'ara'@'%';
+grant execute on procedure ara.update_credits to 'ara'@'%';
+grant execute on procedure ara.read_credits to 'ara'@'%';
