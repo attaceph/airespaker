@@ -45,7 +45,11 @@ $g_config = array(
  'ara.tmpdir.o' => '/data/data/com.termux/files/home/ara/tmp',
  'ara.tmpdir' => '/tmp',
 
- 'openrouter_ai_api_key' => '_____'
+ 'openrouter_ai_api_key' => '_____',
+
+ 'premium_daily_limit' => 0.16129032258,
+ 'premium_input_cost' => 0.1,
+ 'premium_output_cost' => 0.35
 
 );
 

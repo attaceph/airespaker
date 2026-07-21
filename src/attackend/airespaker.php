@@ -398,7 +398,40 @@ function g_air_list( $token, $ai, $tag, $code, $page_no, $page_size ) {
   return $text;
 }
 
-function g_aircache_list( $username, $code, $page_no, $page_size ) {
+function g_update_credits( $token, $input_tokens, $output_tokens, $api_cost, $cost ) {
+  global $g_config;
+  $token = g_escape( $token );
+  $input_tokens = intval( $input_tokens . '' );
+  $output_tokens = intval( $output_tokens . '' );
+  $api_cost = doubleval( $api_cost . '' );
+  $cost = doubleval( $cost . '' );
+  $sql = "set @v_token = ''; call ara.unescape('$token', @v_token); set @v_input_tokens = $input_tokens; set @v_output_tokens = $output_tokens; set @v_api_cost = $api_cost; set @v_cost = $cost; call ara.update_credits( @v_token, @v_input_tokens, @v_output_tokens, @v_api_cost, @v_cost );";
+  g_exec_common( $sql );
+}
+
+function g_read_credits( $token, &$today, &$input_tokens, &$output_tokens, &$api_cost, &$cost ) {
+  global $g_config;
+  $token = g_escape( $token );
+  $today = '_';
+  $input_tokens = -1;
+  $output_tokens = -1;
+  $api_cost = -1;
+  $cost = -1;
+  $sql = "set @v_token = ''; call ara.unescape('$token', @v_token); set @v_today = '_'; set @v_input_tokens = -1; set @v_output_tokens = -1; set @v_api_cost = -1; set @v_cost = -1; call ara.read_credits( @v_token, @v_today, @v_input_tokens, @v_output_tokens, @v_api_cost, @v_cost ); select @v_today, @v_input_tokens, @v_output_tokens, @v_api_cost, @v_cost;";
+  $text = g_exec_common( $sql );
+  if ( $text === null ) return;
+  $lines = explode( "\n", trim( $text ) );
+  if ( count( $lines ) !== 2 ) return;
+  $ln = $lines[1];
+  $fields = explode( "\t", $ln );
+  $today = trim( $fields[0] );
+  $input_tokens = intval( trim( $fields[1] ) );
+  $output_tokens = intval( trim( $fields[2] ) );
+  $api_cost = doubleval( trim( $fields[3] ) );
+  $cost = doubleval( trim( $fields[4] ) );
+}
+
+function g_aircache_list( $username, $code, $page_no, $page_size, $token = '' ) {
   global $g_config;
   $username = g_escape( $username );
   $query = $code;
@@ -414,26 +447,27 @@ function g_aircache_list( $username, $code, $page_no, $page_size ) {
   if ( count( $lines ) < 2 ) {
     $reply = '';
     $oerror = '';
-    g_openrouter_ai( $query, $reply, $oerror );
+    $model = '';
+    g_openrouter_ai( $query, $reply, $model, $oerror, $token );
     $reply = trim( $reply );
     if ( $reply === '' ) {
       if ( $oerror !== '' ) {
          $output = "id\tquery\treply\tai_slug\tai_name\ttags\tcode";
-         $output .= "\n1\t" . g_slug($query) . "\t" . g_escape($oerror) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug('google/gemma-4-26b-a4b-it:free') . "\t" . uniqid();
+         $output .= "\n1\t" . g_slug($query) . "\t" . g_escape($oerror) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug($model) . "\t" . uniqid();
          return $output;
       } else {
         return "id\tquery\treply\tai_slug\tai_name\ttags\tcode";
       }
     } else {
       $output = "id\tquery\treply\tai_slug\tai_name\ttags\tcode";
-      $output .= "\n1\t" . g_slug($query) . "\t" . g_escape($reply) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug('google/gemma-4-26b-a4b-it:free') . "\t" . uniqid();
+      $output .= "\n1\t" . g_slug($query) . "\t" . g_escape($reply) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug($model) . "\t" . uniqid();
 
       if ( !g_aircache_check( $username, $query ) ) {
-        $token = g_login_ara();
-        if ( $token !== false ) {
-          g_save_air( $token, 'others', 'pattern', g_slug($query), $reply );
+        $token_2 = g_login_ara();
+        if ( $token_2 !== false ) {
+          g_save_air( $token_2, 'others', 'pattern', g_slug($query), $reply );
         }
-        g_logout( $token );
+        g_logout( $token_2 );
       }
 
       return $output;
@@ -627,7 +661,8 @@ function g_fill_cache( $air ) {
           if ( $token !== false ) {
             $username = g_current_username( $token );
             $oerror = '';
-            g_openrouter_ai( $raw_query, $cache, $oerror );
+            $model = '';
+            g_openrouter_ai( $raw_query, $cache, $model, $oerror );
             $cache = trim( $cache );
             if ( $cache !== '' ) {
               if ( !g_aircache_check( $username, $raw_query ) ) {
@@ -665,15 +700,16 @@ function g_fill_my_cache( $token, $air ) {
         if ( $rs === false || trim($cache) === '' ) {
           $username = g_current_username( $token );
           $oerror = '';
-          g_openrouter_ai( $raw_query, $cache, $oerror );
+          $model = '';
+          g_openrouter_ai( $raw_query, $cache, $model, $oerror, $token );
           $cache = trim( $cache );
           if ( $cache !== '' ) {
             if ( !g_aircache_check( $username, $raw_query ) ) {
-              $token = g_login_ara();
-              if ( $token !== false ) {
-                g_save_air( $token, 'others', 'pattern', g_slug($raw_query), $cache );
+              $token_2 = g_login_ara();
+              if ( $token_2 !== false ) {
+                g_save_air( $token_2, 'others', 'pattern', g_slug($raw_query), $cache );
               }
-              g_logout( $token );
+              g_logout( $token_2 );
             }
           }
         }
@@ -725,13 +761,56 @@ function g_take_air_others( $token, $air, $ai, $tags ) {
   return g_save_air( $token, $ai, $tags, $query, $reply );
 }
 
-function g_openrouter_ai( $query, &$reply, &$error ) {
+function g_openrouter_ai_check_credits( $token, &$model ) {
+  global $g_config;
+  if ( $token === '' ) {
+    $model = 'google/gemma-4-26b-a4b-it:free';
+    return true;
+  } else {
+    $today = '_';
+    $input_tokens = -1;
+    $output_tokens = -1;
+    $api_cost = -1;
+    $cost = -1;
+    g_read_credits( $token, $today, $input_tokens, $output_tokens, $api_cost, $cost );
+    if ( $input_tokens < 0 || $output_tokens < 0 || $api_cost < 0 || $cost < 0 ) {
+      $model = 'google/gemma-4-26b-a4b-it:free';
+      return true;
+    }
+    $premium_daily_limit = doubleval( $g_config['premium_daily_limit'] . '' );
+    if ( $api_cost > $premium_daily_limit || $cost > $premium_daily_limit ) {
+      $model = 'google/gemma-4-26b-a4b-it:free';
+      return false;
+    }
+    // $model = 'google/gemma-4-31b-it';
+    $model = 'google/gemma-4-26b-a4b-it:free';
+    return true;
+  }
+}
+
+function g_openrouter_ai_update_credits( $token, $input_tokens, $output_tokens, $api_cost ) {
+  global $g_config;
+  if ( $input_tokens < 0 || $output_tokens < 0 || $api_cost < 0 ) return;
+  $input_cost = doubleval( $g_config['premium_input_cost'] . '' );
+  $output_cost = doubleval( $g_config['premium_output_cost'] . '' );
+  $cost = ( $input_tokens / 1000000.0 ) * $input_cost + ( $output_tokens / 1000000.0 ) * $output_cost;
+  g_update_credits( $token, $input_tokens, $output_tokens, $api_cost, $cost );
+}
+
+function g_openrouter_ai( $query, &$reply, &$model, &$error, $token = '' ) {
   global $g_config;
   $error = '';
   $curl_cmd = "/data/data/com.termux/files/usr/bin/curl";
   $api_key = $g_config['openrouter_ai_api_key'];
+  $model = 'google/gemma-4-26b-a4b-it:free';
+  $rs = g_openrouter_ai_check_credits( $token, $model );
+  if ( $rs === false ) {
+    $reply = '';
+    $error = 'Daily access limit ( [ airespaker ] Google Gemma ) has been reach!';
+    return;
+  }
   $data = [
-    'model' => 'google/gemma-4-26b-a4b-it:free',
+    'model' => $model,
     'messages' => [
       [
         'role' => 'user',
@@ -754,12 +833,38 @@ function g_openrouter_ai( $query, &$reply, &$error ) {
     if ( isset( $obj['error'] ) ) {
       if ( isset( $obj['error']['message'] ) ) {
         $error = $obj['error']['message'];
+        if ( isset( $obj['error']['metadata'] ) ) {
+          if ( isset( $obj['error']['metadata']['raw'] ) ) {
+            $error .= " ---> " . $obj['error']['metadata']['raw'];
+          }
+          if ( isset( $obj['error']['metadata']['headers'] ) ) {
+            if ( isset( $obj['error']['metadata']['headers']['X-RateLimit-Limit'] ) ) {
+              $limit = $obj['error']['metadata']['headers']['X-RateLimit-Limit'];
+              $error .= " ---> Rate Limit: " . $limit;
+            }
+          }
+        }
       }
     } else if (isset( $obj['created'])) {
       if (isset( $obj['choices'])) {
         $it = $obj['choices'][0];
         if (isset($it['message'])) {
           $reply = $it['message']['content'];
+          $input_tokens = -1;
+          $output_tokens = -1;
+          $cost = -1;
+          if ( isset( $obj['usage'] ) ) {
+            if ( isset( $obj['usage']['prompt_tokens'] ) ) {
+              $input_tokens = intval( $obj['usage']['prompt_tokens'] . '' );
+            }
+            if ( isset( $obj['usage']['completion_tokens'] ) ) {
+              $output_tokens = intval( $obj['usage']['completion_tokens'] . '' );
+            }
+            if ( isset( $obj['usage']['cost'] ) ) {
+              $cost = doubleval( $obj['usage']['cost'] . '' );
+            }
+          }
+          g_openrouter_ai_update_credits( $token, $input_tokens, $output_tokens, $cost );
           return;
         }
       }

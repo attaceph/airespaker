@@ -51,11 +51,12 @@ if ( $method === 'login' ) {
     echo "Success: ", $result;
   }
 } else if ( $method === 'aircache' ) {
+  $token = g_param('token');
   $username = g_param('username');
   $code = g_param('code');
   $page_no = g_param('page_no');
   $page_size = g_param('page_size');
-  $result = g_aircache_list( $username, $code, $page_no, $page_size );
+  $result = g_aircache_list( $username, $code, $page_no, $page_size, $token );
   header('Content-Type: text/plain');
   if ( $result === false ) {
     echo "Error: Failed to get AIRCache list!";
