@@ -115,6 +115,86 @@
   font-size: 12px;
 }
 
+.language-csharp {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-c {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-cpp {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-bash {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-sh {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-zsh {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-jsp {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-kotlin {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
 .language-unknown {
   display: block;
   margin: 10px;

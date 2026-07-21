@@ -10,6 +10,14 @@
 function gj_md2html( md ) {
   md = gj_md2html_latex_doc( md );
   md = gj_md2html_code_python( md );
+  md = gj_md2html_code_csharp( md );
+  md = gj_md2html_code_cpp( md );
+  md = gj_md2html_code_jsp( md );
+  md = gj_md2html_code_c( md );
+  md = gj_md2html_code_bash( md );
+  md = gj_md2html_code_zsh( md );
+  md = gj_md2html_code_sh( md );
+  md = gj_md2html_code_kotlin( md );
   md = gj_md2html_code_javascript( md );
   md = gj_md2html_code_java( md );
   md = gj_md2html_code_html( md );
@@ -73,6 +81,190 @@ function gj_md2html_code_python( src ) {
       start = idx_2 + 3;
     }
     idx = src.indexOf( '```python', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_csharp( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```csharp', start );
+  while (idx >= 0) {
+    let idx_2 = src.indexOf('```', idx + 9);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 9;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx + 9, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'csharp' }
+      ).value;
+      tag += src.substring( start, idx ) + '<pre><code class="language-csharp">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```csharp', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_kotlin( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```kotlin', start );
+  while (idx >= 0) {
+    let idx_2 = src.indexOf('```', idx + 9);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 9;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx + 9, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'kotlin' }
+      ).value;
+      tag += src.substring( start, idx ) + '<pre><code class="language-kotlin">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```kotlin', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_bash( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```bash', start );
+  while (idx >= 0) {
+    let idx_2 = src.indexOf('```', idx + 7);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 7;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx + 7, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'bash' }
+      ).value;
+      tag += src.substring( start, idx ) + '<pre><code class="language-bash">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```bash', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_sh( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```sh', start );
+  while (idx >= 0) {
+    let idx_2 = src.indexOf('```', idx + 5);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 5;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx + 5, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'sh' }
+      ).value;
+      tag += src.substring( start, idx ) + '<pre><code class="language-sh">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```sh', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_zsh( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```zsh', start );
+  while (idx >= 0) {
+    let idx_2 = src.indexOf('```', idx + 6);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 6;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx + 6, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'zsh' }
+      ).value;
+      tag += src.substring( start, idx ) + '<pre><code class="language-zsh">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```zsh', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_jsp( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```jsp', start );
+  while (idx >= 0) {
+    let idx_2 = src.indexOf('```', idx + 6);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 6;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx + 6, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'jsp' }
+      ).value;
+      tag += src.substring( start, idx ) + '<pre><code class="language-zsh">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```jsp', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_c( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```c', start );
+  while (idx >= 0) {
+    let idx_2 = src.indexOf('```', idx + 4);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 4;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx + 4, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'c' }
+      ).value;
+      tag += src.substring( start, idx ) + '<pre><code class="language-c">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```c', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_cpp( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```cpp', start );
+  while (idx >= 0) {
+    let idx_2 = src.indexOf('```', idx + 6);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 6;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx + 6, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'cpp' }
+      ).value;
+      tag += src.substring( start, idx ) + '<pre><code class="language-c">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```cpp', start );
   }
   tag += src.substring(start);
   return tag;
