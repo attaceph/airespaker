@@ -34,6 +34,8 @@
   <script src="/components/aircache_page.js"></script>
   <link rel="stylesheet" href="/components/aircache_page.css">
   <script src="https://cdn.jsdelivr.net/npm/latex.js/dist/latex.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script> 
   <script>
 let gv_app = null;
 let go_enable_prelaunch = true;
