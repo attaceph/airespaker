@@ -26,6 +26,13 @@ create table ara_users (
   used bigint not null default 0,
   fulled int not null default 0,
 
+  premium int not null default 0,
+  today varchar(256) not null default date(current_timestamp),
+  input_tokens bigint not null default 0,
+  output_tokens bigint not null default 0,
+  api_cost double not null default 0,
+  cost double not null default 0,
+
   created timestamp not null default current_timestamp,
   updated timestamp not null default current_timestamp on update current_timestamp,
   constraint uc_ara_users unique(username)
