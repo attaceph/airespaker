@@ -46,6 +46,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/applescript.min.js"></script> 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/arcade.min.js"></script> 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/asciidoc.min.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/aspectj.min.js"></script> 
   <script>
 let gv_app = null;
 let go_enable_prelaunch = true;
