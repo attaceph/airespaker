@@ -7,6 +7,16 @@
  * Source: https://github.com/attaceph/airespaker
  *
  */
+ 
+global $g_config;
+require_once __DIR__ . '/config.php';
+
+$premium = $g_config['premium'];
+if ( $g_config['prelaunch'] ) {
+  $prelaunch = 'true';
+} else {
+  $prelaunch = 'false';
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -49,7 +59,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/aspectj.min.js"></script> 
   <script>
 let gv_app = null;
-let go_enable_prelaunch = true;
+let go_enable_prelaunch = <?php print( $prelaunch ); ?>;
+let go_premium = '<?php print( $premium ); ?>';
 
 function gj_rand_str( length ) {
   let result = '';

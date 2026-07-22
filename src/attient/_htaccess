@@ -2,6 +2,9 @@ RewriteEngine On
 RewriteCond %{SCRIPT_FILENAME} !-d
 RewriteCond %{REQUEST_URI} !^/index\.php(.*)$
 RewriteCond %{REQUEST_URI} !^/sync\.php(.*)$
+RewriteCond %{REQUEST_URI} !^/pay-premium\.php(.*)$
+RewriteCond %{REQUEST_URI} !^/jquery-4\.0\.0\.min\.js(.*)$
+RewriteCond %{REQUEST_URI} !^/premium-01\.png(.*)$
 
 RewriteCond %{REQUEST_URI} !^/components/md2html\.js(.*)$
 RewriteCond %{REQUEST_URI} !^/components/md2html\.css(.*)$
