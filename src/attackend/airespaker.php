@@ -383,7 +383,7 @@ function g_air_list( $token, $ai, $tag, $code, $page_no, $page_size ) {
   $token = g_escape( $token );
   $ai = g_escape( $ai );
   $tag = g_escape( $tag );
-  $code = g_escape( g_slug($code) );
+  $code = g_escape( g_slug_f($code) );
   $page_no = intval( $page_no . '' );
   $page_size = intval( $page_size . '' );
   $sql = "set @v_token = ''; call ara.unescape('$token', @v_token); set @v_ai = ''; call ara.unescape('$ai', @v_ai); set @v_tag = ''; call ara.unescape('$tag', @v_tag); set @v_code = ''; call ara.unescape('$code', @v_code); set @v_page_no = $page_no; set @v_page_size = $page_size; call ara.air_list( @v_token, @v_ai, @v_tag, @v_code, @v_page_no, @v_page_size );";
@@ -444,22 +444,22 @@ function g_aircache_list( $username, $code, $page_no, $page_size, $token = '' ) 
     $reply = trim( $reply );
     if ( $reply === '' ) {
       if ( $oerror !== '' ) {
-         $cache_list = "\n1\t" . g_slug($query) . "\t" . g_escape($oerror) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug($model) . "\t" . uniqid();
+         $cache_list = "\n1\t" . g_slug_f($query) . "\t" . g_escape($oerror) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug($model) . "\t" . uniqid();
       }
     } else {
-      $cache_list = "\n1\t" . g_slug($query) . "\t" . g_escape($reply) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug($model) . "\t" . uniqid();
+      $cache_list = "\n1\t" . g_slug_f($query) . "\t" . g_escape($reply) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug($model) . "\t" . uniqid();
 
       if ( !g_aircache_check( $username, $query ) ) {
         $token_2 = g_login_ara();
         if ( $token_2 !== false ) {
-          g_save_air( $token_2, 'others', 'pattern', g_slug($query), $reply );
+          g_save_air( $token_2, 'others', 'pattern', g_slug_f($query), $reply );
         }
         g_logout( $token_2 );
       }
     }
   }
 
-  $code = g_escape( g_slug($code) );
+  $code = g_escape( g_slug_f($code) );
   $page_no = intval( $page_no . '' );
   $page_size = intval( $page_size . '' );
   $sql = "set @v_username = ''; call ara.unescape('$username', @v_username); set @v_code = ''; call ara.unescape('$code', @v_code); set @v_page_no = $page_no; set @v_page_size = $page_size; call ara.aircache_list( @v_username, @v_code, @v_page_no, @v_page_size );";
@@ -485,7 +485,7 @@ function g_aircache_list( $username, $code, $page_no, $page_size, $token = '' ) 
 function g_aircache_check( $username, $code ) {
   global $g_config;
   $username = g_escape( $username );
-  $code = g_escape( g_slug($code) );
+  $code = g_escape( g_slug_f($code) );
   $sql = "set @v_username = ''; call ara.unescape('$username', @v_username); set @v_code = ''; call ara.unescape('$code', @v_code); set @v_find = 0; call ara.aircache_check( @v_username, @v_code, @v_find ); select @v_find;";
   $text = g_exec_common( $sql );
   if ( $text === null ) {
@@ -643,7 +643,7 @@ function g_split_air( $air, &$query, &$reply ) {
     $idx_2 = strpos( $air, "```", $idx + 6 );
     if ( $idx_2 !== false ) {
       $query = trim( substr( $air, $idx + 6, $idx_2 - ($idx + 6) ) );
-      $query = g_slug( $query );
+      $query = g_slug_f( $query );
       $reply = trim(substr( $air, $idx_2 + 3 ));
     }
   }
@@ -660,7 +660,7 @@ function g_fill_cache( $air ) {
       $raw_query = $query . '';
       $cache = '';
       if ( $raw_query !== '' ) {
-        $query = g_slug( $query );
+        $query = g_slug_f( $query );
         $rs = g_air_cache( $query, $cache );
         if ( $rs === false || trim( $cache ) === '' ) {
           $token = g_login_ara();
@@ -672,7 +672,7 @@ function g_fill_cache( $air ) {
             $cache = trim( $cache );
             if ( $cache !== '' ) {
               if ( !g_aircache_check( $username, $raw_query ) ) {
-                g_save_air( $token, 'others', 'pattern', g_slug($raw_query), $cache );
+                g_save_air( $token, 'others', 'pattern', g_slug_f($raw_query), $cache );
               }
             }
             g_logout( $token );
@@ -701,7 +701,7 @@ function g_fill_my_cache( $token, $air ) {
       $raw_query = $query . '';
       $cache = '';
       if ( $raw_query !== '' ) {
-        $query = g_slug( $query );
+        $query = g_slug_f( $query );
         $rs = g_air_my_cache( $token, $query, $cache );
         if ( $rs === false || trim($cache) === '' ) {
           $username = g_current_username( $token );
@@ -713,7 +713,7 @@ function g_fill_my_cache( $token, $air ) {
             if ( !g_aircache_check( $username, $raw_query ) ) {
               $token_2 = g_login_ara();
               if ( $token_2 !== false ) {
-                g_save_air( $token_2, 'others', 'pattern', g_slug($raw_query), $cache );
+                g_save_air( $token_2, 'others', 'pattern', g_slug_f($raw_query), $cache );
               }
               g_logout( $token_2 );
             }
@@ -878,4 +878,16 @@ function g_openrouter_ai( $query, &$reply, &$model, &$error, $token = '' ) {
   }
 }
 
+function g_slug_f( $src ) {
+  $size = 40;
+  $slug = g_slug( $src );
+  if ( strlen( $slug ) <= $size ) return $slug;
+  $idx = strpos( $slug, '-', $size );
+  if ( $idx === false ) {
+    $slug = substr( $slug, 0, $size ) . '-' . strtolower( md5( substr( $slug, $size ) ) );
+  } else {
+    $slug = substr( $slug, 0, $idx + 1 ) . strtolower( md5( substr( $slug, $idx + 1 ) ) );
+  }
+  return $slug;
+}
 ?>
