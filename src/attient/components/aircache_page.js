@@ -42,7 +42,7 @@ const AIRCachePage = {
 <input type="button" class="aircache-button-2" value="&lt;&lt;" v-on:click="doAIRListBack" /> &nbsp; [ {{ air_list_ai_page_no }} ] &nbsp; <input type="button" class="aircache-button-2" value="&gt;&gt;" v-on:click="doAIRListNext" />
   </div>
   <div :class="item.full ? 'aircache-air-list-item aircache-air-list-item-full' : 'aircache-air-list-item  aircache-air-list-item-half'" v-for="item in air_list_ai">
-  <div class="aircache-air-list-item-toolbar"><input type="button" :class="item.full ? 'aircache-button' : 'aircache-button-2'" value="&lt;|" v-on:click="doAIRListItemTurnOff(item)" />&nbsp;<input type="button" :class="item.full ? 'aircache-button-2' : 'aircache-button'" value="|&gt;" v-on:click="doAIRListItemTurnOn(item)" />&nbsp;[ {{ item.no }} : {{ item.code }} ]&nbsp;<input type="button" class="aircache-button" value="C" v-on:click="doCopyAIR(item)" style="margin-right: 5px; margin-bottom: 5px;" /><input type="button" class="aircache-button-2" :value="item.ai_name" v-on:click="doFilter()" style="margin-right: 10px; margin-bottom: 5px;" /><input v-for="part in item.tags" type="button" class="aircache-button-2" :value="part" v-on:click="doFilter()" style="margin-right: 10px; margin-bottom: 5px;" />
+  <div class="aircache-air-list-item-toolbar"><input type="button" :class="item.full ? 'aircache-button' : 'aircache-button-2'" value="&lt;|" v-on:click="doAIRListItemTurnOff(item)" />&nbsp;<input type="button" :class="item.full ? 'aircache-button-2' : 'aircache-button'" value="|&gt;" v-on:click="doAIRListItemTurnOn(item)" />&nbsp;[ {{ item.no }} : {{ item.code }} ]&nbsp;<input type="button" class="aircache-button" value="C" v-on:click="doCopyAIR(item)" style="margin-right: 5px; margin-bottom: 5px;" />&nbsp;<input v-show="token != ''" type="button" class="aircache-button" value="U" v-on:click="doUpdateAIR(item)" style="margin-right: 5px; margin-bottom: 5px;" /><input type="button" class="aircache-button-2" :value="item.ai_name" v-on:click="doFilter()" style="margin-right: 10px; margin-bottom: 5px;" /><input v-for="part in item.tags" type="button" class="aircache-button-2" :value="part" v-on:click="doFilter()" style="margin-right: 10px; margin-bottom: 5px;" />
   </div>
   <div class="aircache-air-list-item-text" v-html="item.reply">
   </div>
@@ -100,6 +100,28 @@ const AIRCachePage = {
     },
     doAIRListItemTurnOff( item ) {
       item['full'] = false;
+    },
+    doUpdateAIR( item ) {
+      let v_query = item.raw_reply;
+      let v_tags = item.tags_raw;
+      v_tags = prompt('Enter tags: ', v_tags);
+      if ( v_tags + '' === 'undefined' ) {
+        v_tags = '';
+      }
+      let v_this = this;
+      let ai = 'Other AIs';
+      let machine = 'others';
+      v_this.message = "\n" + 'Saving AI response from [ ' + ai + ' ] ...' + "\n";
+      gj_text_post( '/airespaker/?method=take', {'token': this.token, 'machine': machine, 'query': v_query, 'tags': v_tags}, 'n', function( text ) {
+        if ( text.indexOf('Success:') >= 0 ) {
+          v_this.message = "\n" + 'AI response from [ ' + ai + ' ] has been saved ...' + "\n";
+        } else if ( text.indexOf('Error:') >= 0) {
+          let msg = text.substring(6).trim();
+          v_this.message = "\n" + msg + "\n";
+        } else {
+          v_this.message = "\n" + 'Failed to save AI response! ' + "\n";
+        }
+      });    
     },
     doAIRListBack() {
       this.air_list_ai_page_no--;
@@ -163,13 +185,12 @@ const AIRCachePage = {
               tags.push(pt);
             }
             let code = fields[6].trim();
-            let item = { 'tags': tags, 'code': code, 'raw_reply': raw_reply, 'full': v_this.fullable, 'no': no, 'id': id, 'query': query, 'reply': reply, 'ai_slug': ai_slug, 'ai_name': ai_name };
+            let item = { 'tags': tags, 'tags_raw': fields[5], 'code': code, 'raw_reply': raw_reply, 'full': v_this.fullable, 'no': no, 'id': id, 'query': query, 'reply': reply, 'ai_slug': ai_slug, 'ai_name': ai_name };
             list.push( item );
           }
           v_this.air_list_ai = list;
           v_this.air_list_ai_show = 'yes';
           v_this.message = '';
-          hljs.highlightAll();
         }
       });
     },

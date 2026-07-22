@@ -48,7 +48,7 @@ const DashboardPage = {
 <input type="button" class="dashboard-button-2" value="&lt;&lt;" v-on:click="doAIRListBack" /> &nbsp; [ {{ air_list_ai_page_no }} ] &nbsp; <input type="button" class="dashboard-button-2" value="&gt;&gt;" v-on:click="doAIRListNext" />
   </div>
   <div :class="item.full ? 'dashboard-air-list-item dashboard-air-list-item-full' : 'dashboard-air-list-item  dashboard-air-list-item-half'" v-for="item in air_list_ai">
-  <div class="dashboard-air-list-item-toolbar"><input type="button" :class="item.full ? 'dashboard-button' : 'dashboard-button-2'" value="&lt;|" v-on:click="doAIRListItemTurnOff(item)" />&nbsp;<input type="button" :class="item.full ? 'dashboard-button-2' : 'dashboard-button'" value="|&gt;" v-on:click="doAIRListItemTurnOn(item)" />&nbsp;[ {{ item.no }} : {{ item.code }} ]&nbsp;<input type="button" class="dashboard-button" value="X" v-on:click="doDeleteAIR(item.code)" style="margin-right: 5px; margin-bottom: 5px;" /><input type="button" class="dashboard-button" value="C" v-on:click="doCopyAIR(item)" style="margin-right: 5px; margin-bottom: 5px;" /><input type="button" class="dashboard-button-2" :value="item.ai_name" v-on:click="doFilterByAI(item.ai_slug)" style="margin-right: 10px; margin-bottom: 5px;" /><input v-for="part in item.tags" type="button" class="dashboard-button-2" :value="part" v-on:click="doFilterByAI('', part)" style="margin-right: 10px; margin-bottom: 5px;" />
+  <div class="dashboard-air-list-item-toolbar"><input type="button" :class="item.full ? 'dashboard-button' : 'dashboard-button-2'" value="&lt;|" v-on:click="doAIRListItemTurnOff(item)" />&nbsp;<input type="button" :class="item.full ? 'dashboard-button-2' : 'dashboard-button'" value="|&gt;" v-on:click="doAIRListItemTurnOn(item)" />&nbsp;[ {{ item.no }} : {{ item.code }} ]&nbsp;<input type="button" class="dashboard-button" value="X" v-on:click="doDeleteAIR(item.code)" style="margin-right: 5px; margin-bottom: 5px;" /><input type="button" class="dashboard-button" value="C" v-on:click="doCopyAIR(item)" style="margin-right: 5px; margin-bottom: 5px;" />&nbsp;<input type="button" class="aircache-button" value="U" v-on:click="doUpdateAIR(item)" style="margin-right: 5px; margin-bottom: 5px;" /><input type="button" class="dashboard-button-2" :value="item.ai_name" v-on:click="doFilterByAI(item.ai_slug)" style="margin-right: 10px; margin-bottom: 5px;" /><input v-for="part in item.tags" type="button" class="dashboard-button-2" :value="part" v-on:click="doFilterByAI('', part)" style="margin-right: 10px; margin-bottom: 5px;" />
   </div>
   <div class="dashboard-air-list-item-text" v-html="item.reply">
   </div>
@@ -62,6 +62,7 @@ const DashboardPage = {
       dashboard_page_text: gv_dashboard_page_text,
       token: '',
       code: '',
+      message: '',
       ais_list: [],
       air_list_ai: [],
       air_list_ai_slug: '',
@@ -178,7 +179,7 @@ const DashboardPage = {
               tags.push(pt);
             }
             let code = fields[6].trim();
-            let item = { 'tags': tags, 'code': code, 'raw_reply': raw_reply, 'full': false, 'no': no, 'id': id, 'query': query, 'reply': reply, 'ai_slug': ai_slug, 'ai_name': ai_name };
+            let item = { 'tags': tags, 'tags_raw': fields[5], 'code': code, 'raw_reply': raw_reply, 'full': false, 'no': no, 'id': id, 'query': query, 'reply': reply, 'ai_slug': ai_slug, 'ai_name': ai_name };
             list.push( item );
           }
           v_this.air_list_ai = list;
@@ -209,6 +210,44 @@ const DashboardPage = {
         v_this.doFilterByAI(v_this.air_list_ai_slug, v_this.air_list_ai_tag);
         v_this.doUpdateAllTags();
       });
+    },
+    doUpdateAIR( item ) {
+      let v_query = item.raw_reply;
+      let v_tags = item.tags_raw;
+      let v_this = this;
+      let ai = 'Other AIs';
+      let machine = item.ai_slug;
+      let nmachine = prompt( "Enter AI [ 'google-ai-search', 'bing-copilot-search', 'chatgpt', 'others' ]:", machine );      
+      if (nmachine == 'google-ai-search') {
+        ai = 'Google AI Search';
+        machine = nmachine;
+      } else if (nmachine == 'bing-copilot-search') {
+        ai = 'Bing Copilot Search';
+        machine = nmachine;
+      } else if (nmachine == 'chatgpt') {
+        ai = 'ChatGPT';
+        machine = nmachine;
+      } else {
+        ai = 'Other AIs';
+        machine = 'others';
+      }
+      v_tags = prompt('Enter tags: ', v_tags);
+      if ( v_tags + '' === 'undefined' ) {
+        v_tags = '';
+      }
+      v_this.message = "\n" + 'Saving AI response from [ ' + ai + ' ] ...' + "\n";
+      gj_text_post( '/airespaker/?method=take', {'token': this.token, 'machine': machine, 'query': v_query, 'tags': v_tags}, 'n', function( text ) {
+        if ( text.indexOf('Success:') >= 0 ) {
+          v_this.message = "\n" + 'AI response from [ ' + ai + ' ] has been saved ...' + "\n";
+          v_this.doUpdateAllTags();
+          v_this.doFilterByAI(v_this.air_list_ai_slug, v_this.air_list_ai_tag);
+        } else if ( text.indexOf('Error:') >= 0) {
+          let msg = text.substring(6).trim();
+          v_this.message = "\n" + msg + "\n";
+        } else {
+          v_this.message = "\n" + 'Failed to save AI response! ' + "\n";
+        }
+      });    
     },
     doLogout() {
       this.$emit( 'set_token', '' );
