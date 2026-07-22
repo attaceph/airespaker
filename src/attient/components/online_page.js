@@ -44,7 +44,45 @@ const OnlinePage = {
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Entrance
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/><br/>
-<input v-show="!hide" type="button" class="online-button-2" @click="go_page('login')" value="Login" /> &nbsp; <input  v-show="!hide" type="button" class="online-button-2" @click="go_page('register')" value="Register" /> &nbsp; <input  v-show="!hide" type="button" class="online-button-2" @click="go_page('aircache')" value="AIRCache" />
+<input v-show="!hide" type="button" class="online-button-2" @click="go_page('login')" value="Login" /> &nbsp; <input  v-show="!hide && premium == ''" type="button" class="online-button-2" @click="go_page('register')" value="Register" /> &nbsp; <input  v-show="!hide && premium == ''" type="button" class="online-button-2" @click="go_page('aircache')" value="AIRCache" />
+
+<br/><br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pricing
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
+
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---------------------------<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Freemium
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---------------------------<br/>
+
+<br/>+ Unlimited AI responses creation<br/>
+
+<br/>+ Unlimited tags creation<br/>
+
+<br/>+ Non-continuous connection to back-end<br/>
+(Broken for each 1 hour)<br/>
+
+<br/>+ Very limited access to AI model (Google Gemma)<br/>
+
+<br/>+ Price: Free forever<br/>
+
+<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---------------------------<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Premium
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---------------------------<br/>
+
+<br/>+ Unlimited AI responses creation<br/>
+
+<br/>+ Unlimited tags creation<br/>
+
+<br/>+ Continuous connection to back-end (99% uptime)<br/>
+
+<br/>+ Dedicated subdomain and/or dedicated custom domain <br/>
+
+<br/>+ Limited access (around 300 non-cached <br/>
+<br/>query a day) to AI model (Google Gemma)<br/>
+
+<br/>+ Price: $159.9 / year<br/>
+
+<br/>+ <a target="_blank" href="https://airespaker.is-best.net/pay-premium.php">How to pay?</a><br/>
 </div>
 <div v-show="hide">---------------------\|_\|-----------------------
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Comming Soon
@@ -59,11 +97,49 @@ const OnlinePage = {
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
 <div class="take-guide" v-show="hide"><div class='embed-container'><iframe src="https://www.youtube.com/embed/REesvvuEidE" frameborder='0' allowfullscreen></iframe></div></div>
 
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
+<div v-show="premium == ''"><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Initial Review
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
 
-<input v-show="hide" type="button" class="online-button-2" @click="go_page('aircache')" value="AIRCache" />
+<br/><input v-show="hide" type="button" class="online-button-2" @click="go_page('aircache')" value="AIRCache" /></div>
+
+<br/><br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pricing
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
+
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---------------------------<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Freemium
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---------------------------<br/>
+
+<br/>+ Unlimited AI responses creation<br/>
+
+<br/>+ Unlimited tags creation<br/>
+
+<br/>+ Non-continuous connection to back-end<br/>
+(Broken for each 1 hour)<br/>
+
+<br/>+ Very limited access to AI model (Google Gemma)<br/>
+
+<br/>+ Price: Free forever<br/>
+
+<br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---------------------------<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Premium
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---------------------------<br/>
+
+<br/>+ Unlimited AI responses creation<br/>
+
+<br/>+ Unlimited tags creation<br/>
+
+<br/>+ Continuous connection to back-end (99% uptime)<br/>
+
+<br/>+ Dedicated subdomain and/or dedicated custom domain <br/>
+
+<br/>+ Limited access (around 300 non-cached <br/>
+<br/>query a day) to AI model (Google Gemma)<br/>
+
+<br/>+ Price: $159.9 / year<br/>
+
+<br/>+ <a target="_blank" href="https://airespaker.is-best.net/pay-premium.php">How to pay?</a><br/>
 </div>
 
   </div></div>
@@ -77,6 +153,7 @@ const OnlinePage = {
   emits: [ 'update_online' ],
   data() {
     return {
+      premium: go_premium,
       page: 'home',
       token: '',
       online_page_text: gv_online_page_text,
@@ -88,36 +165,38 @@ const OnlinePage = {
     update_online( value ) {
       this.online = value;
       
-      let uri = location + '';
-      uri = uri.replaceAll('https://airespaker.is-best.net', '').replaceAll('http://airespaker.is-best.net', '');
-      let qry = '';
-      let lidx = uri.lastIndexOf('/');
-      if (lidx >= 0) {
-        lidx = uri.indexOf('q=', lidx + 1);
+      if (this.premium === '') {
+        let uri = location + '';
+        uri = uri.replaceAll('https://airespaker.is-best.net', '').replaceAll('http://airespaker.is-best.net', '');
+        let qry = '';
+        let lidx = uri.lastIndexOf('/');
         if (lidx >= 0) {
-          qry = uri.substring(lidx + 2);
-          lidx = qry.indexOf('&');
+          lidx = uri.indexOf('q=', lidx + 1);
           if (lidx >= 0) {
-            qry = qry.substring(0, lidx);
+            qry = uri.substring(lidx + 2);
+            lidx = qry.indexOf('&');
+            if (lidx >= 0) {
+              qry = qry.substring(0, lidx);
+            }
+            qry = decodeURIComponent(qry);
           }
-          qry = decodeURIComponent(qry);
         }
-      }
-      let idx = uri.indexOf('/c/');
-      if (idx === 0) {
-        uri = uri.substring(3);
-        let username = 'airespaker';
-        idx = uri.indexOf('/');
-        if (idx >= 0) {
-          username = uri.substring(0, idx);
-        }
-        if (this.page !== 'aircache') {
-          this.go_page('aircache');
-          if (qry.length > 0) {
-            this.$refs.aircache_page.setUsername(username, false);   
-            this.$refs.aircache_page.setQuery(qry);   
-          } else {
-            this.$refs.aircache_page.setUsername(username, true);   
+        let idx = uri.indexOf('/c/');
+        if (idx === 0) {
+          uri = uri.substring(3);
+          let username = 'airespaker';
+          idx = uri.indexOf('/');
+          if (idx >= 0) {
+            username = uri.substring(0, idx);
+          }
+          if (this.page !== 'aircache') {
+            this.go_page('aircache');
+            if (qry.length > 0) {
+              this.$refs.aircache_page.setUsername(username, false);   
+              this.$refs.aircache_page.setQuery(qry);   
+            } else {
+              this.$refs.aircache_page.setUsername(username, true);   
+            }
           }
         }
       }

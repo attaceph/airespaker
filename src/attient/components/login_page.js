@@ -21,8 +21,10 @@ const gv_login_page_text = `=======_==========================_============
 
 const LoginPage = {
   template: `<div class="login-page"><div class="login-page-inner">{{ login_page_text }}
-<br/><br/>- Username ----------|_|-----------------------<br/>
-<input type="text" class="login-text" v-model="username" /><br/>-----------------------------------------------<br/><br/>
+<div v-show="premium == ''"><br/><br/>- Username ----------|_|-----------------------<br/>
+<input type="text" class="login-text" v-model="username" /><br/>-----------------------------------------------<br/><br/></div>
+<div v-show="premium != ''"><br/><br/>- Username ----------|_|-----------------------<br/>
+<input type="text" class="login-text" v-model="username" readonly="yes" /><br/>-----------------------------------------------<br/><br/></div>
 <br/>- Password ----------|_|-----------------------<br/>
 <input type="password" class="login-text" v-model="password" /><br/>-----------------------------------------------<br/><br/>
 <div v-show="message != ''" class="login-result"><br/>- Results -----------|_|-----------------------<br/>
@@ -34,8 +36,9 @@ const LoginPage = {
   emits: [ 'go_page', 'set_token' ],
   data() {
     return {
+      premium: go_premium,
       login_page_text: gv_login_page_text,
-      username: "",
+      username: go_premium,
       password: "",
       message: ""
     };
@@ -45,6 +48,9 @@ const LoginPage = {
       this.username = '';
       this.password = '';
       this.message = '';
+      if (this.premium !== '') {
+        this.username = this.premium;
+      }
     },
     doLogin() {
       let v_this = this;
