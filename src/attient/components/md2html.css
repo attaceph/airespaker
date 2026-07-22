@@ -185,6 +185,116 @@
   font-size: 12px;
 }
 
+.language-aspectj {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-xml {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-xhtml {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-rss {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-atom {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-xjb {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-xsd {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-xsl {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-plist {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-svg {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.language-exec-svg {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  border: dashed 2px gainsboro;
+  border-left: dashed 5px gainsboro;
+  font-family: monospace;
+  font-size: 12px;
+}
+
 .language-adoc {
   display: block;
   margin: 10px;

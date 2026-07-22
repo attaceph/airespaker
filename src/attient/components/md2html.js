@@ -45,6 +45,17 @@ function gj_md2html( md ) {
   md = gj_md2html_code_jsx( md );
   md = gj_md2html_code_1c( md );
   md = gj_md2html_code_html( md );
+  md = gj_md2html_code_xml( md );
+  md = gj_md2html_code_xhtml( md );
+  md = gj_md2html_code_rss( md );
+  md = gj_md2html_code_atom( md );
+  md = gj_md2html_code_xjb( md );
+  md = gj_md2html_code_xsd( md );
+  md = gj_md2html_code_xsl( md );
+  md = gj_md2html_code_plist( md );
+  md = gj_md2html_code_exec_svg( md );
+  md = gj_md2html_code_svg( md );
+  md = gj_md2html_code_aspectj( md );  
   md = gj_md2html_code_unknown( md );
   md = md.trim();
   let ret = gj_md2html_clnk( md );
@@ -897,6 +908,35 @@ function gj_md2html_code_adoc( src ) {
   return tag;
 }
 
+function gj_md2html_code_aspectj( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```aspectj', start );
+  while (idx >= 0) {
+    let idx_t = src.indexOf("\n", idx);
+    if (idx_t < 0 ) {
+      idx_t = idx;
+    } else {
+      idx_t++;
+    }
+    let idx_2 = src.indexOf('```', idx + 10);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 10;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx_t, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'aspectj' }
+      ).value + '';
+      tag += src.substring( start, idx ) + '<pre><code class="language-aspectj">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._').replaceAll('*', '_._as_._').replaceAll('#', '_._sh_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```aspectj', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
 function gj_md2html_code_arcade( src ) {
   let tag = '';
   let start = 0;
@@ -1124,6 +1164,302 @@ function gj_md2html_code_css( src ) {
       start = idx_2 + 3;
     }
     idx = src.indexOf( '```css', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_xml( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```xml', start );
+  while (idx >= 0) {
+    let idx_t = src.indexOf("\n", idx);
+    if (idx_t < 0 ) {
+      idx_t = idx;
+    } else {
+      idx_t++;
+    }
+    let idx_2 = src.indexOf('```', idx + 6);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 6;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx_t, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'xml' }
+      ).value;
+      tag += src.substring( start, idx ) + '<pre><code class="language-xml">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._').replaceAll('*', '_._as_._').replaceAll('#', '_._sh_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```xml', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_rss( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```rss', start );
+  while (idx >= 0) {
+    let idx_t = src.indexOf("\n", idx);
+    if (idx_t < 0 ) {
+      idx_t = idx;
+    } else {
+      idx_t++;
+    }
+    let idx_2 = src.indexOf('```', idx + 6);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 6;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx_t, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'xml' }
+      ).value;
+      tag += src.substring( start, idx ) + '<pre><code class="language-rss">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._').replaceAll('*', '_._as_._').replaceAll('#', '_._sh_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```rss', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_xjb( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```xjb', start );
+  while (idx >= 0) {
+    let idx_t = src.indexOf("\n", idx);
+    if (idx_t < 0 ) {
+      idx_t = idx;
+    } else {
+      idx_t++;
+    }
+    let idx_2 = src.indexOf('```', idx + 6);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 6;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx_t, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'xml' }
+      ).value;
+      tag += src.substring( start, idx ) + '<pre><code class="language-xjb">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._').replaceAll('*', '_._as_._').replaceAll('#', '_._sh_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```xjb', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_xsd( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```xsd', start );
+  while (idx >= 0) {
+    let idx_t = src.indexOf("\n", idx);
+    if (idx_t < 0 ) {
+      idx_t = idx;
+    } else {
+      idx_t++;
+    }
+    let idx_2 = src.indexOf('```', idx + 6);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 6;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx_t, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'xml' }
+      ).value;
+      tag += src.substring( start, idx ) + '<pre><code class="language-xsd">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._').replaceAll('*', '_._as_._').replaceAll('#', '_._sh_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```xsd', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_xsl( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```xsl', start );
+  while (idx >= 0) {
+    let idx_t = src.indexOf("\n", idx);
+    if (idx_t < 0 ) {
+      idx_t = idx;
+    } else {
+      idx_t++;
+    }
+    let idx_2 = src.indexOf('```', idx + 6);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 6;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx_t, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'xml' }
+      ).value;
+      tag += src.substring( start, idx ) + '<pre><code class="language-xsl">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._').replaceAll('*', '_._as_._').replaceAll('#', '_._sh_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```xsl', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_svg( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```svg', start );
+  while (idx >= 0) {
+    let idx_t = src.indexOf("\n", idx);
+    if (idx_t < 0 ) {
+      idx_t = idx;
+    } else {
+      idx_t++;
+    }
+    let idx_2 = src.indexOf('```', idx + 6);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 6;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx_t, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'xml' }
+      ).value;
+      let svg_src = src.substring(idx_t, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<').trim();
+      if (svg_src.indexOf('<svg') < 0) {
+        svg_src = '<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">' + svg_src + '</svg>';
+      }
+      let svg_div = '<div class="language-exec-svg"><iframe frameborder="no" style="width: 100%; height: 100%;" sandbox="" src="data:text/html;charset=utf-8,' + encodeURIComponent(svg_src) + '"></iframe></div>';
+      tag += src.substring( start, idx ) + svg_div + '<pre><code class="language-svg">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._').replaceAll('*', '_._as_._').replaceAll('#', '_._sh_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```svg', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_exec_svg( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```exec-svg', start );
+  while (idx >= 0) {
+    let idx_t = src.indexOf("\n", idx);
+    if (idx_t < 0 ) {
+      idx_t = idx;
+    } else {
+      idx_t++;
+    }
+    let idx_2 = src.indexOf('```', idx + 11);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 11;  
+    } else {
+      let svg_src = src.substring(idx_t, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<').trim();
+      if (svg_src.indexOf('<svg') < 0) {
+        svg_src = '<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">' + svg_src + '</svg>';
+      }
+      let svg_div = '<div class="language-exec-svg"><iframe frameborder="no" style="width: 100%; height: 100%;" sandbox="" src="data:text/html;charset=utf-8,' + encodeURIComponent(svg_src) + '"></iframe></div>';
+      tag += src.substring( start, idx ) + svg_div;
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```exec-svg', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_plist( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```plist', start );
+  while (idx >= 0) {
+    let idx_t = src.indexOf("\n", idx);
+    if (idx_t < 0 ) {
+      idx_t = idx;
+    } else {
+      idx_t++;
+    }
+    let idx_2 = src.indexOf('```', idx + 8);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 8;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx_t, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'xml' }
+      ).value;
+      tag += src.substring( start, idx ) + '<pre><code class="language-plist">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._').replaceAll('*', '_._as_._').replaceAll('#', '_._sh_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```plist', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_atom( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```atom', start );
+  while (idx >= 0) {
+    let idx_t = src.indexOf("\n", idx);
+    if (idx_t < 0 ) {
+      idx_t = idx;
+    } else {
+      idx_t++;
+    }
+    let idx_2 = src.indexOf('```', idx + 7);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 7;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx_t, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'xml' }
+      ).value;
+      tag += src.substring( start, idx ) + '<pre><code class="language-atom">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._').replaceAll('*', '_._as_._').replaceAll('#', '_._sh_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```atom', start );
+  }
+  tag += src.substring(start);
+  return tag;
+}
+
+function gj_md2html_code_xhtml( src ) {
+  let tag = '';
+  let start = 0;
+  let idx = src.indexOf( '```xhtml', start );
+  while (idx >= 0) {
+    let idx_t = src.indexOf("\n", idx);
+    if (idx_t < 0 ) {
+      idx_t = idx;
+    } else {
+      idx_t++;
+    }
+    let idx_2 = src.indexOf('```', idx + 8);
+    if (idx_2 < 0) {
+      tag += src.substring( start, idx );
+      start = idx + 8;  
+    } else {
+      const highlightedCode = hljs.highlight(
+        src.substring(idx_t, idx_2 ).replaceAll('&gt;', '>').replaceAll('&lt;', '<'),
+        { language: 'xml' }
+      ).value;
+      tag += src.substring( start, idx ) + '<pre><code class="language-xhtml">' + highlightedCode.replaceAll('<', '_._lt_._').replaceAll( '>', '_._gt_._').replaceAll('*', '_._as_._').replaceAll('#', '_._sh_._') + '</code></pre>';
+      start = idx_2 + 3;
+    }
+    idx = src.indexOf( '```xhtml', start );
   }
   tag += src.substring(start);
   return tag;

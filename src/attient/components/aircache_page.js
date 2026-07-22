@@ -31,7 +31,7 @@ const AIRCachePage = {
 <br/>-----------------------------------------------<br/></div>
 
 <br/>- Query -------------|_|-----------------------<br/>
-<input type="text" class="aircache-text" v-model="code" />&nbsp;<input type="button" class="aircache-button" @click="doFilter" value="Enter" />&nbsp;<input type="button" class="aircache-button" @click="doCopyURI" value="C" />&nbsp;<input type="button" class="aircache-button" @click="doCopyShotURI" value="S" />
+<textarea class="aircache-text" v-model="code" style="height: 200px !important;"></textarea>&nbsp;<input type="button" class="aircache-button" @click="doFilter" value="Enter" />&nbsp;<input type="button" class="aircache-button" @click="doCopyURI" value="C" />&nbsp;<input type="button" class="aircache-button" @click="doCopyShotURI" value="S" />
 <br/>-----------------------------------------------<br/>
 
 <div v-show="message != ''" class="aircache-result"><br/>- Results -----------|_|-----------------------<br/>

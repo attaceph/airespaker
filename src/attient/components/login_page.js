@@ -48,8 +48,10 @@ const LoginPage = {
     },
     doLogin() {
       let v_this = this;
+      this.message = "\n" + 'Logging in ...' + "\n";
       gj_text_get( '/airespaker/?method=login&username=' + encodeURIComponent(this.username) + '&password=' + encodeURIComponent(this.password), 'n', function( text ) {
         if ( text.indexOf('Success:') >= 0 ) {
+          v_this.message = '';
           let token = text.substring(8).trim();
           v_this.$emit( 'set_token', token );
           v_this.$emit( 'go_page', 'dashboard' );
