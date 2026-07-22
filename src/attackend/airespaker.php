@@ -433,8 +433,32 @@ function g_read_credits( $token, &$today, &$input_tokens, &$output_tokens, &$api
 
 function g_aircache_list( $username, $code, $page_no, $page_size, $token = '' ) {
   global $g_config;
+  $cache_list = '';
   $username = g_escape( $username );
   $query = $code;
+  if ( !g_aircache_check( $username, $query ) ) {
+    $reply = '';
+    $oerror = '';
+    $model = '';
+    g_openrouter_ai( $query, $reply, $model, $oerror, $token );
+    $reply = trim( $reply );
+    if ( $reply === '' ) {
+      if ( $oerror !== '' ) {
+         $cache_list = "\n1\t" . g_slug($query) . "\t" . g_escape($oerror) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug($model) . "\t" . uniqid();
+      }
+    } else {
+      $cache_list = "\n1\t" . g_slug($query) . "\t" . g_escape($reply) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug($model) . "\t" . uniqid();
+
+      if ( !g_aircache_check( $username, $query ) ) {
+        $token_2 = g_login_ara();
+        if ( $token_2 !== false ) {
+          g_save_air( $token_2, 'others', 'pattern', g_slug($query), $reply );
+        }
+        g_logout( $token_2 );
+      }
+    }
+  }
+
   $code = g_escape( g_slug($code) );
   $page_no = intval( $page_no . '' );
   $page_size = intval( $page_size . '' );
@@ -445,32 +469,14 @@ function g_aircache_list( $username, $code, $page_no, $page_size, $token = '' ) 
   }
   $lines = explode( "\n", trim($text) );
   if ( count( $lines ) < 2 ) {
-    $reply = '';
-    $oerror = '';
-    $model = '';
-    g_openrouter_ai( $query, $reply, $model, $oerror, $token );
-    $reply = trim( $reply );
-    if ( $reply === '' ) {
-      if ( $oerror !== '' ) {
-         $output = "id\tquery\treply\tai_slug\tai_name\ttags\tcode";
-         $output .= "\n1\t" . g_slug($query) . "\t" . g_escape($oerror) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug($model) . "\t" . uniqid();
-         return $output;
-      } else {
-        return "id\tquery\treply\tai_slug\tai_name\ttags\tcode";
-      }
-    } else {
-      $output = "id\tquery\treply\tai_slug\tai_name\ttags\tcode";
-      $output .= "\n1\t" . g_slug($query) . "\t" . g_escape($reply) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug($model) . "\t" . uniqid();
-
-      if ( !g_aircache_check( $username, $query ) ) {
-        $token_2 = g_login_ara();
-        if ( $token_2 !== false ) {
-          g_save_air( $token_2, 'others', 'pattern', g_slug($query), $reply );
-        }
-        g_logout( $token_2 );
-      }
-
-      return $output;
+    $output = "id\tquery\treply\tai_slug\tai_name\ttags\tcode";
+    if ( $cache_list !== '' ) {
+      $output .= "\n$cache_list";
+    }
+    return $output;
+  } else {
+    if ( $cache_list !== '' ) {
+      $text .= "\n$cache_list";
     }
   }
   return $text;
