@@ -66,12 +66,14 @@ retrieval, reference, and storage purposes.
   o Take AI response directly from AI
   o Take screenshot of AI response
   o Support embedding Latex documents into AI response
+  o Save returned AI response when being logged in
  
 + Filter & display AI responses:
   o By Reponse Code
   o By AI Query
   o By AI
   o By Tag
+  o Save displayed AI response as new one
 
 
 ---------------------|_|-----------------------
