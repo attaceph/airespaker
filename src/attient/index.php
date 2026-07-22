@@ -34,11 +34,30 @@
   <script src="/components/aircache_page.js"></script>
   <link rel="stylesheet" href="/components/aircache_page.css">
   <script src="https://cdn.jsdelivr.net/npm/latex.js/dist/latex.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/1c.min.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/abnf.min.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/ada.min.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/armasm.min.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/powershell.min.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/actionscript.min.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/apache.min.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/applescript.min.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/arcade.min.js"></script> 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/asciidoc.min.js"></script> 
   <script>
 let gv_app = null;
 let go_enable_prelaunch = true;
+
+function gj_rand_str( length ) {
+  let result = '';
+  let characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmopqrstuvwxya0123456789';
+  for ( var i = 0; i < length; i++ ) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+}
 
 function gj_escape( sql ) {
   sql = sql.replaceAll( "_", "_._us_._" );
@@ -65,7 +84,7 @@ function gj_unescape( sql ) {
 }
 
 async function gj_text_get( uri, cr, cb ) {
-  let url = '/proxy/text_get.php?cr=' + cr + '&uri=' + encodeURIComponent(uri); 
+  let url = '/proxy/text_get.php?rand=' + gj_rand_str(16) + '&cr=' + cr + '&uri=' + encodeURIComponent(uri); 
   try {
     const response = await fetch(url, { signal: AbortSignal.timeout(3600000) });
     const text = await response.text();
@@ -77,7 +96,7 @@ async function gj_text_get( uri, cr, cb ) {
 }
 
 async function gj_text_post( uri, data, cr, cb ) {
-  let url = '/proxy/text_post.php?cr=' + cr + '&uri=' + encodeURIComponent(uri); 
+  let url = '/proxy/text_post.php?rand=' + gj_rand_str(16) + '&cr=' + cr + '&uri=' + encodeURIComponent(uri); 
   const formData = new FormData();
   Object.entries(data).forEach(([key, value]) => {
     formData.append(key, value);
