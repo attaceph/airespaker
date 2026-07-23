@@ -86,7 +86,7 @@ const AIRCachePage = {
     },
     setUsername( username, fetching = true ) {
       this.username = username;
-      this.code = 'Which queries are in cache?';
+      this.code = go_aircache_default_query;
       this.username_fixed = true;
       if (fetching) {
         this.doFilter();      
@@ -145,7 +145,7 @@ const AIRCachePage = {
       this.fullable = false;
       this.login = login;
       this.username = 'airespaker';
-      this.code = 'Which queries are in cache?';
+      this.code = go_aircache_default_query;
       //this.username_fixed = false;
       this.token = token;
       let v_this = this;

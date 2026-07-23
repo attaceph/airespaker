@@ -14,7 +14,7 @@ const gv_savecache_page_text = `=======_==========================_============
 =====================\|_\|=======================
               AI Response Taker
                  --- oOo ---
-                 Save Cache
+                 Build Cache
 ===============================================
 `;
 
@@ -55,6 +55,8 @@ const SaveCachePage = {
       username: 'airespaker',
       message: '',
       fullable: false,
+      query: '',
+      reply: '',
       air_list_ai: [],
       air_list_ai_slug: '',
       air_list_ai_tag: '',
