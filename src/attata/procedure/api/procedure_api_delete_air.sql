@@ -11,7 +11,7 @@ drop procedure if exists delete_air;
 delimiter $$
 create procedure delete_air(
   in p_token varchar(36), 
-  in p_code varchar(36)
+  in p_code varchar(4096)
 )
 sql security definer
 begin
