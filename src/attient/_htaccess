@@ -24,6 +24,7 @@ RewriteCond %{REQUEST_URI} !^/components/register_page\.js(.*)$
 RewriteCond %{REQUEST_URI} !^/components/register_page\.css(.*)$
 RewriteCond %{REQUEST_URI} !^/components/aircache_page\.js(.*)$
 RewriteCond %{REQUEST_URI} !^/components/aircache_page\.css(.*)$
+RewriteCond %{REQUEST_URI} !^/components/savecache_page\.js(.*)$
 
 RewriteCond %{REQUEST_URI} !^/proxy/sample\.php(.*)$
 RewriteCond %{REQUEST_URI} !^/proxy/text_get\.php(.*)$

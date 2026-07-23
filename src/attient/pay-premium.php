@@ -171,23 +171,28 @@ function g_resize() {
 
 + Continuous connection to back-end (99% uptime)
 
-+ Dedicated subdomain and/or dedicated custom domain 
++ Dedicated subdomain 
 
-+ Limited access (around 300 non-cached 
++ Limited access (around 700 non-cached 
 
 query a day) to AI model (Google Gemma)
 
-+ Price: $159.9 / year
++ Price: $99.9 / year
 
 
 ---------------------|_|-----------------------
                 HOW TO PAY
 -----------------------------------------------
 
-+ Please send Mastercard® Virtual Gift Cards to us via
-  <a target="_blank" href="https://www.giftcards.com/us/en/catalog/product-details/mastercard-egift-gift-card">https://www.giftcards.com/us/en/catalog/product-details/mastercard-egift-gift-card</a> . After 3 days, we will send you setup account information.
++ We now only accept Mastercard® Virtual Gift Cards.
+After having more than 10 premium users, we will
+accept other payment methods.
 
-o Amount: $159.9
++ Please send Mastercard® Virtual Gift Cards to us via
+  <a target="_blank" href="https://www.giftcards.com/us/en/catalog/product-details/mastercard-egift-gift-card">https://www.giftcards.com/us/en/catalog/product-details/mastercard-egift-gift-card</a> . 
+After 3 days, we will send you setup account information.
+
+o Amount: $99.9
 
 o Quantity: 1
 
@@ -204,15 +209,7 @@ o Message:
 + Code: airespaker.premium
 + Email: &gt; Email to contact you &lt;
 + airespaker's username: 
-  &gt; Username which you registered on [airespaker] &lt;
-+ Dedicated subdomain: 
-  &gt; Subdomain which you'd like to have. 
-  Your domain should be: __sub__.airespaker.com &lt;
-+ Dedicated domain: 
-  &gt; Custom domain which you'd like to have. 
-  You should choose another domain if it has been registered.
-  We will contact you in this case.&lt;
-  
+  &gt; Username which you registered on [airespaker] &lt;  
     -----
 
 o Delivery Method: Send by email

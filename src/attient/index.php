@@ -43,6 +43,7 @@ if ( $g_config['prelaunch'] ) {
   <link rel="stylesheet" href="/components/register_page.css">
   <script src="/components/aircache_page.js"></script>
   <link rel="stylesheet" href="/components/aircache_page.css">
+  <script src="/components/savecache_page.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/latex.js/dist/latex.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script> 
@@ -158,6 +159,7 @@ function gj_load() {
   v_app.component( 'profile_page', ProfilePage );
   v_app.component( 'register_page', RegisterPage );
   v_app.component( 'aircache_page', AIRCachePage );
+  v_app.component( 'savecache_page', SaveCachePage );
   v_app.component( 'dashboard_page', DashboardPage );
   v_app.component( 'online_page', OnlinePage );
   gv_app = v_app.mount('#ge_app');
