@@ -100,6 +100,8 @@ const SaveCachePage = {
         if ( text.indexOf('Success:') >= 0 ) {
           v_this.message = "\n" + 'AI response from [ ' + ai + ' ] has been saved ...' + "\n";
           v_this.doFilter();
+          v_this.query = '';
+          v_this.reply = '';
         } else if ( text.indexOf('Error:') >= 0) {
           let msg = text.substring(6).trim();
           v_this.message = "\n" + msg + "\n";
