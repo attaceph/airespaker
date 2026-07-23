@@ -26,6 +26,18 @@ retrieval, reference, and storage purposes.
 + Well-known AIs include
   o Google AI Search, Bing Copilot Search, ChatGPT
 
+     -------------------------------------
+          Why I built [airespaker]?
+     -------------------------------------
+
+I often copy responses from Google AI Search and paste into my notes keeper app on my Android smartphone. The problem I have is their displayed formats is not good and I have to modify notes many times to make it displaying well.
+
+I built [airespaker] AI Response Taker to solve my problem and share it to everyone having same problem of mine. [airespaker] considers AI responses as notes, storing them & managing them. Users can add AI responses from Google AI Search, Bing Copilot Search, ChatGPT and other AIs. Users can not modify added AI responses but can delete them. Users can filter & display AI responses by response code, response's AI and response's tags. The format of AI responses are quite beautiful.
+
+Currently, [airespaker] has minimalist interface which is mostly in text. My purpose is building features fastly, shipping them, collecting feedbacks and compositing useful & expected features. Then, I can build next version of [airespaker] with beautiful, clean UI and useful features.
+
+I also made a feature [ AI Response Cache Chatbot ]. Users can take AI response from system's cache, user's cache or directly from AI (Google Gemma). Users can take URIs of displaying AI response or screenshot of it. By tapping 'C' button, URI of displaying AI response is copied to clipboard. By tapping 'S' button, URI of screenshot of AI response is copied to clipboard. By using AIRCache, users can save money, query more & pay less.
+
 `;
 
 const OnlinePage = {
