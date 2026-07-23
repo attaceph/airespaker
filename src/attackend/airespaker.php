@@ -431,11 +431,34 @@ function g_read_credits( $token, &$today, &$input_tokens, &$output_tokens, &$api
   $cost = doubleval( trim( $fields[4] ) );
 }
 
-function g_aircache_list( $username, $code, $page_no, $page_size, $token = '' ) {
+function g_aircache_list( $username, $code, $page_no, $page_size, $token = '', $cache = 'query-only' ) {
   global $g_config;
   $cache_list = '';
   $username = g_escape( $username );
   $query = $code;
+  if ( $cache === 'update-cache' ) {
+    $reply = '';
+    $oerror = '';
+    $model = '';
+    g_openrouter_ai( $query, $reply, $model, $oerror, $token );
+    $reply = trim( $reply );
+    if ( $reply === '' ) {
+      if ( $oerror !== '' ) {
+         $cache_list .= "\n1\t" . g_slug_f($query) . "\t" . g_escape($oerror) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug($model) . "\t" . uniqid();
+      }
+    } else {
+      $token_2 = g_login_ara();
+      if ( $token_2 === false ) {
+        $cache_list .= "\n1\t" . g_slug_f($query) . "\t" . g_escape($reply) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug($model) . "\t" . uniqid();
+      } else {
+        g_delete_air( $token_2, g_slug_f($query) );
+        if ( !g_aircache_check( $username, $query ) ) {
+          g_save_air( $token_2, 'others', 'pattern', g_slug_f($query), $reply );
+        }
+        g_logout( $token_2 );
+      }
+    }
+  }
   if ( !g_aircache_check( $username, $query ) ) {
     $reply = '';
     $oerror = '';
@@ -444,10 +467,10 @@ function g_aircache_list( $username, $code, $page_no, $page_size, $token = '' ) 
     $reply = trim( $reply );
     if ( $reply === '' ) {
       if ( $oerror !== '' ) {
-         $cache_list = "\n1\t" . g_slug_f($query) . "\t" . g_escape($oerror) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug($model) . "\t" . uniqid();
+         $cache_list .= "\n1\t" . g_slug_f($query) . "\t" . g_escape($oerror) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug($model) . "\t" . uniqid();
       }
     } else {
-      $cache_list = "\n1\t" . g_slug_f($query) . "\t" . g_escape($reply) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug($model) . "\t" . uniqid();
+      $cache_list .= "\n1\t" . g_slug_f($query) . "\t" . g_escape($reply) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug($model) . "\t" . uniqid();
 
       if ( !g_aircache_check( $username, $query ) ) {
         $token_2 = g_login_ara();
@@ -879,6 +902,26 @@ function g_openrouter_ai( $query, &$reply, &$model, &$error, $token = '' ) {
 }
 
 function g_slug_f( $src ) {
+  $src_2 = strtolower( trim( $src ) );
+  if ( strlen( $src_2 ) > 0 ) {
+    if ( $src_2[strlen($src_2)-1] === '?' || $src_2[strlen($src_2)-1] === '!' || $src_2[strlen($src_2)-1] === '.' ) {
+      $src_2 = substr( $src_2, 0, strlen($src_2) - 1 );
+    }
+  }
+  $src_2 = ' ' . $src_2 . ' ';
+  $words = @file_get_contents( __DIR__ . '/stop_words_english.txt' );
+  if ( $words === null ) $words = '';
+  $words = explode( "\n", $words );
+  for ( $i = 0; $i < count( $words ); $i++ ) {
+    $w = trim( $words[ $i ] );
+    if ( $w === '' ) continue;
+    $src_2 = str_replace( ' ' . $w . ' ', ' ', $src_2 );
+  }
+  $src_2 = trim( $src_2 );
+  if ( $src_2 !== '' ) {
+    $src = $src_2;
+  }
+
   $size = 40;
   $slug = g_slug( $src );
   if ( strlen( $slug ) <= $size ) return $slug;
