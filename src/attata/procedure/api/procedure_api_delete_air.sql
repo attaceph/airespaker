@@ -28,7 +28,9 @@ begin
     call has_right( p_token, 'api_call', v_right );
     if v_right = 1 then
       call `current_user`( p_token, v_user_id, v_username, v_name, v_email, v_phone );
-      delete from `ara_responses` where `user_id` = v_user_id and `code` = p_code;
+      if p_code <> '' then
+        delete from `ara_responses` where `user_id` = v_user_id and ( `code` = p_code or `query` = p_code );
+      end if;
     end if;
   end if;
 end;$$
