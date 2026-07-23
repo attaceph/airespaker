@@ -17,6 +17,7 @@ if ( $g_config['prelaunch'] ) {
 } else {
   $prelaunch = 'false';
 }
+$aircache_default_query = $g_config['aircache_default_query'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -62,6 +63,7 @@ if ( $g_config['prelaunch'] ) {
 let gv_app = null;
 let go_enable_prelaunch = <?php print( $prelaunch ); ?>;
 let go_premium = '<?php print( $premium ); ?>';
+let go_aircache_default_query = "<?php print( $aircache_default_query ); ?>";
 
 function gj_rand_str( length ) {
   let result = '';
