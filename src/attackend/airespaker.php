@@ -452,9 +452,7 @@ function g_aircache_list( $username, $code, $page_no, $page_size, $token = '', $
         $cache_list .= "\n1\t" . g_slug_f($query) . "\t" . g_escape($reply) . "\t" . g_slug('Open Router') . "\tOpen Router\t" . g_slug($model) . "\t" . uniqid();
       } else {
         g_delete_air( $token_2, g_slug_f($query) );
-        if ( !g_aircache_check( $username, $query ) ) {
-          g_save_air( $token_2, 'others', 'pattern', g_slug_f($query), $reply );
-        }
+        g_save_air( $token_2, 'others', 'pattern', g_slug_f($query), $reply );
         g_logout( $token_2 );
       }
     }
