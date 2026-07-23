@@ -7,36 +7,29 @@
  *
  */
 
-const gv_aircache_page_text = `=======_==========================_============
+const gv_savecache_page_text = `=======_==========================_============
   __ _(_)  _ _ ___ ____ __   __ _\| \|_____ _ _ 
  / _\` \| \| \| '_/ -_\|_-< '_ \\ / _\` \| / / -_) '_\|
  \\__,_\|_\| \|_\| \\___/__/ .__/ \\__,_\|_\\_\\___\|_\|  
 =====================\|_\|=======================
               AI Response Taker
                  --- oOo ---
-                  AIR Cache
+                 Save Cache
 ===============================================
 `;
 
-const AIRCachePage = {
-  template: `<div class="aircache-page"><div class="aircache-page-inner">{{ aircache_page_text }}
+const SaveCachePage = {
+  template: `<div class="aircache-page"><div class="aircache-page-inner">{{ savecache_page_text }}
     
-<br/><input v-show="token != '' && !username_fixed" type="button" class="aircache-button-2" @click="doDashboard" value="Dashboard" /><input v-show="token == '' && !username_fixed" type="button" class="aircache-button-2" @click="doHome" value="Home" /><br/>
-
-<div v-show="username_fixed"><br/>- Username ----------|_|-----------------------<br/>
-<input type="text" class="aircache-text" v-model="username" readonly="yes" />
-<br/>-----------------------------------------------<br/></div>
-<div v-show="!username_fixed"><br/>- Username ----------|_|-----------------------<br/>
-<input type="text" class="aircache-text" v-model="username" />
-<br/>-----------------------------------------------<br/></div>
+<br/><input v-show="token != ''" type="button" class="aircache-button-2" @click="doDashboard" value="Dashboard" /><br/>
 
 <br/>- Query -------------|_|-----------------------<br/>
-<textarea class="aircache-text" v-model="code" style="height: 200px !important;"></textarea>&nbsp;<input type="button" class="aircache-button" @click="doFilter" value="Enter" />&nbsp;<input type="button" class="aircache-button" @click="doCopyURI" value="C" />&nbsp;<input type="button" class="aircache-button" @click="doCopyShotURI" value="S" />
+<textarea class="aircache-text" v-model="query" style="height: 200px !important;"></textarea>
 <br/>-----------------------------------------------<br/>
 
-<div v-show="token != ''"><br/>- Cache Option ------|_|-----------------------<br/>
-<select class="aircache-text" v-model="cache"><option value="update-cache">New AI Query & Update Cache</option><option value="query-only">New AI Query If Not In Cache</option></select>
-<br/>-----------------------------------------------<br/></div>
+<br/>- Reply -------------|_|-----------------------<br/>
+<textarea class="aircache-text" v-model="reply" style="height: 200px !important;"></textarea>&nbsp;<input type="button" class="aircache-button" @click="doSave" value="Save" />
+<br/>-----------------------------------------------<br/>
 
 <div v-show="message != ''" class="aircache-result"><br/>- Results -----------|_|-----------------------<br/>
 {{ message }}<br/>-----------------------------------------------<br/><br/></div>
@@ -57,13 +50,9 @@ const AIRCachePage = {
   emits: [ 'go_page', 'set_token' ],
   data() {
     return {
-      aircache_page_text: gv_aircache_page_text,
+      savecache_page_text: gv_savecache_page_text,
       token: '',
-      code: '',
-      login: '',
-      cache: 'query-only',
       username: 'airespaker',
-      username_fixed: false,
       message: '',
       fullable: false,
       air_list_ai: [],
@@ -75,28 +64,6 @@ const AIRCachePage = {
     };
   },
   methods: {
-    doCopyURI() {
-      let uri = 'https://airespaker.is-best.net/c/' + this.username + '/?q=' + encodeURIComponent(this.code);
-      navigator.clipboard.writeText(uri);      
-    },
-    doCopyShotURI() {
-      let uri = 'https://airespaker.is-best.net/c/' + this.username + '/?q=' + encodeURIComponent(this.code);
-      let uri2 = 'https://airespaker.is-best.net/proxy/screenshot.php?uri=' + encodeURIComponent(uri);
-      navigator.clipboard.writeText(uri2);      
-    },
-    setUsername( username, fetching = true ) {
-      this.username = username;
-      this.code = 'Which queries are in cache?';
-      this.username_fixed = true;
-      if (fetching) {
-        this.doFilter();      
-      }
-    },
-    setQuery( query ) {
-      this.code = query;
-      this.fullable = true;
-      this.doFilter();
-    },
     doCopyAIR( item ) {
       let reply = item['raw_reply'];
       navigator.clipboard.writeText(reply);
@@ -106,6 +73,40 @@ const AIRCachePage = {
     },
     doAIRListItemTurnOff( item ) {
       item['full'] = false;
+    },
+    doSave() {
+      let ai = 'Other AIs';
+      let machine = 'others';
+      let nmachine = prompt( "Enter AI [ 'google-ai-search', 'bing-copilot-search', 'chatgpt', 'others' ]:", machine );      
+      if (nmachine == 'google-ai-search') {
+        ai = 'Google AI Search';
+        machine = nmachine;
+      } else if (nmachine == 'bing-copilot-search') {
+        ai = 'Bing Copilot Search';
+        machine = nmachine;
+      } else if (nmachine == 'chatgpt') {
+        ai = 'ChatGPT';
+        machine = nmachine;
+      } else {
+        ai = 'Other AIs';
+        machine = 'others';
+      }
+      let v_query = this.reply;
+      v_query = "```aiq\n" + this.query + "\n```\n" + v_query;
+      let v_tags = 'pattern';
+      let v_this = this;
+      v_this.message = "\n" + 'Saving AI response from [ ' + ai + ' ] ...' + "\n";
+      gj_text_post( '/airespaker/?method=take', {'token': this.token, 'machine': machine, 'query': v_query, 'tags': v_tags}, 'n', function( text ) {
+        if ( text.indexOf('Success:') >= 0 ) {
+          v_this.message = "\n" + 'AI response from [ ' + ai + ' ] has been saved ...' + "\n";
+          v_this.doFilter();
+        } else if ( text.indexOf('Error:') >= 0) {
+          let msg = text.substring(6).trim();
+          v_this.message = "\n" + msg + "\n";
+        } else {
+          v_this.message = "\n" + 'Failed to save AI response! ' + "\n";
+        }
+      });        
     },
     doUpdateAIR( item ) {
       let v_query = item.raw_reply;
@@ -141,11 +142,8 @@ const AIRCachePage = {
       this.doFilter();
     },
     doPrepare(token, login) {
-      this.cache = 'query-only';
       this.fullable = false;
-      this.login = login;
       this.username = 'airespaker';
-      this.code = 'Which queries are in cache?';
       //this.username_fixed = false;
       this.token = token;
       let v_this = this;
@@ -162,7 +160,7 @@ const AIRCachePage = {
       this.air_list_ai = [];
       this.air_list_ai_show = 'no';
       this.message = "\n" + 'Taking AI response from AIRCache or directly from AI ...' + "\n";
-      gj_text_post( '/airespaker/?method=aircache', { 'page_no': v_page_no, 'page_size': v_page_size,  'code': this.code, 'username': this.username, 'token': this.token, 'cache': this.cache }, 'n', function( text ) {
+      gj_text_post( '/airespaker/?method=aircache', { 'page_no': v_page_no, 'page_size': v_page_size,  'code': this.query, 'username': this.username, 'token': this.token, 'cache': 'query-only' }, 'n', function( text ) {
         if ( text.indexOf('Success:') >= 0 ) {
           let data = text.substring(8).trim();
           let lines = data.split("\n");
@@ -204,9 +202,6 @@ const AIRCachePage = {
     },
     doDashboard() {
       this.$emit( 'go_page', 'dashboard' );
-    },
-    doHome() {
-      this.$emit( 'go_page', 'home' );
     }
   }
 };

@@ -75,12 +75,12 @@ const OnlinePage = {
 
 <br/>+ Continuous connection to back-end (99% uptime)<br/>
 
-<br/>+ Dedicated subdomain and/or dedicated custom domain <br/>
+<br/>+ Dedicated subdomain<br/>
 
-<br/>+ Limited access (around 300 non-cached <br/>
+<br/>+ Limited access (around 700 non-cached <br/>
 <br/>query a day) to AI model (Google Gemma)<br/>
 
-<br/>+ Price: $159.9 / year<br/>
+<br/>+ Price: $99.9 / year<br/>
 
 <br/>+ <a target="_blank" href="https://airespaker.is-best.net/pay-premium.php">How to pay?</a><br/>
 </div>
@@ -132,28 +132,30 @@ const OnlinePage = {
 
 <br/>+ Continuous connection to back-end (99% uptime)<br/>
 
-<br/>+ Dedicated subdomain and/or dedicated custom domain <br/>
+<br/>+ Dedicated subdomain<br/>
 
-<br/>+ Limited access (around 300 non-cached <br/>
+<br/>+ Limited access (around 700 non-cached <br/>
 <br/>query a day) to AI model (Google Gemma)<br/>
 
-<br/>+ Price: $159.9 / year<br/>
+<br/>+ Price: $99.9 / year<br/>
 
 <br/>+ <a target="_blank" href="https://airespaker.is-best.net/pay-premium.php">How to pay?</a><br/>
 </div>
 
   </div></div>
-  <login_page v-show="online && page == 'login'" ref="login_page" @go_page="go_page" @set_token="set_token"></login_page>  
+  <login_page v-show="online && page == 'login'" ref="login_page" @go_page="go_page" @set_token="set_token" @set_username="set_username"></login_page>  
   <dashboard_page v-show="online && page == 'dashboard'" ref="dashboard_page" @go_page="go_page" @set_token="set_token"></dashboard_page>  
   <take_page v-show="online && page == 'take'" ref="take_page" @go_page="go_page" @set_token="set_token"></take_page>  
   <profile_page v-show="online && page == 'profile'" ref="profile_page" @go_page="go_page" @set_token="set_token"></profile_page>  
   <register_page v-show="online && page == 'register'" ref="register_page" @go_page="go_page" @set_token="set_token"></register_page>  
   <aircache_page v-show="online && page == 'aircache'" ref="aircache_page" @go_page="go_page" @set_token="set_token"></aircache_page>  
+  <savecache_page v-show="online && page == 'savecache'" ref="savecache_page" @go_page="go_page" @set_token="set_token"></savecache_page>  
 `,
   emits: [ 'update_online' ],
   data() {
     return {
       premium: go_premium,
+      username: go_premium,
       page: 'home',
       token: '',
       online_page_text: gv_online_page_text,
@@ -201,6 +203,13 @@ const OnlinePage = {
         }
       }
     },
+    set_username( username ) {
+      if (this.token !== '') {
+        this.username = username;
+      } else {
+        this.username = '';
+      }
+    },
     set_token( value ) {
       if (value === '' && this.token !== '') {
         gj_text_post( '/airespaker/?method=logout', {'token': this.token}, 'n', function( text ) {
@@ -220,7 +229,9 @@ const OnlinePage = {
       } else if ( value == 'dashboard' ) {
         this.$refs.dashboard_page.doPrepare(this.token);      
       } else if ( value == 'aircache' ) {
-        this.$refs.aircache_page.doPrepare(this.token);      
+        this.$refs.aircache_page.doPrepare(this.token, this.username);      
+      } else if ( value == 'savecache' ) {
+        this.$refs.savecache_page.doPrepare(this.token, this.username);      
       }
       this.page = value;
     },

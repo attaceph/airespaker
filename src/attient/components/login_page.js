@@ -33,7 +33,7 @@ const LoginPage = {
 <input type="button" class="login-button" value="Login" v-on:click="doLogin" /> &nbsp; <input type="button" class="login-button-2" value="Canel" v-on:click="doCancel" />
   </div></div>
 `,
-  emits: [ 'go_page', 'set_token' ],
+  emits: [ 'go_page', 'set_token', 'set_username' ],
   data() {
     return {
       premium: go_premium,
@@ -60,6 +60,7 @@ const LoginPage = {
           v_this.message = '';
           let token = text.substring(8).trim();
           v_this.$emit( 'set_token', token );
+          v_this.$emit( 'set_username', v_this.username );
           v_this.$emit( 'go_page', 'dashboard' );
         } else if ( text.indexOf('Error:') >= 0) {
           let msg = text.substring(6).trim();
