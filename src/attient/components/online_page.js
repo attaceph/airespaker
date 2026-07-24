@@ -38,18 +38,15 @@ notes many times to make it displaying well.
 
 I built [airespaker] AI Response Taker to solve my problem and 
 share it to everyone having same problem of mine. [airespaker] 
-considers AI responses as notes, storing them & managing them. 
+considers AI respones as notes, storing them & managing them. 
 Users can add AI responses from Google AI Search, Bing Copilot 
 Search, ChatGPT and other AIs. Users can not modify added AI 
 responses but can delete them. Users can filter & display AI 
-responses by response code, response's AI and response's tags. 
-The format of AI responses are quite beautiful.
+responses by code, query, AI and tags. The format of responses 
+is quite beautiful.
 
-Currently, [airespaker] has minimalist interface which is mostly 
-in text. My purpose is building features fastly, shipping them, 
-collecting feedbacks and compositing useful & expected features. 
-Then, I can build next version of [airespaker] with beautiful, 
-clean UI and useful features.
+[airespaker] has free forever plan and premium plan with 
+$99.9 / year.
 
 I also made a feature [ AI Response Cache Chatbot ]. Users can 
 take AI response from system's cache, user's cache or directly 
@@ -67,7 +64,7 @@ const OnlinePage = {
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Features Review
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/><br/>
-<div class="take-guide" v-show="hide"><div class='embed-container'><iframe src="https://www.youtube.com/embed/REesvvuEidE" frameborder='0' allowfullscreen></iframe></div></div>
+<div class="take-guide"><div class='embed-container'><iframe src="https://www.youtube.com/embed/REesvvuEidE" frameborder='0' allowfullscreen></iframe></div></div>
 
 <br/><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pricing
@@ -131,7 +128,7 @@ const OnlinePage = {
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/attaceph/airespaker/blob/main/brd/icon-96.png?raw=true" v-on:click="hide=false" style="cursor: pointer; cursor: hand; margin-top: -8px; width: 20px; height: 20px; " />&nbsp;Launching on 04 Aug 2026&nbsp;<img src="https://github.com/attaceph/airespaker/blob/main/brd/icon-96.png?raw=true" v-on:click="hide=false" style="cursor: pointer; cursor: hand; margin-top: -8px; width: 20px; height: 20px; " />
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
-<br/><a href="https://www.producthunt.com/p/airespaker-ai-response-taker" target="_blank" rel="noopener noreferrer"><img alt="[airespaker] AI Response Taker - Notes keeper for AI responses | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1198843&amp;theme=light&amp;t=1784279627210"></a><br/>
+<br/><a href="https://www.producthunt.com/products/airespaker-ai-response-taker" target="_blank" rel="noopener noreferrer"><img alt="[airespaker] AI Response Taker - Notes keeper for AI responses | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1198843&amp;theme=light&amp;t=1784279627210"></a><br/>
 
 <div v-show="premium == ''"><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Try thing first
