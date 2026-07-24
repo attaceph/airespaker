@@ -30,7 +30,7 @@ const LoginPage = {
 <div v-show="message != ''" class="login-result"><br/>- Results -----------|_|-----------------------<br/>
 {{ message }}<br/>-----------------------------------------------<br/><br/></div>
 
-<input type="button" class="login-button" value="Login" v-on:click="doLogin" /> &nbsp; <input type="button" class="login-button-2" value="Canel" v-on:click="doCancel" />
+<input type="button" class="login-button" value="Login" v-on:click="doLogin" /> &nbsp; <input type="button" class="login-button-2" value="Register" onclick="location='/register/';" /> &nbsp; <input type="button" class="login-button-2" value="Canel" v-on:click="doCancel" />
   </div></div>
 `,
   emits: [ 'go_page', 'set_token', 'set_username' ],

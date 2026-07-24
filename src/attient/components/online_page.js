@@ -126,18 +126,8 @@ const OnlinePage = {
 
 <div>---------------------\|_\|-----------------------
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Getting Started
-<br/>-----------------------------------------------<br/>
+<br/>-----------------------------------------------<br/><br/>
 
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Demo Account
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
-<br/>+ Username: (cannot change profile) demoa1, demoa2, demoa3
-<br/>+ Username: (can change profile)    demob1, demob2, demob3
-<br/>+ Password: rzutomqahegpnyx<br/>
-
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Entrance
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/><br/>
 <input type="button" class="online-button-2" @click="go_page('login')" value="Login" /> &nbsp; <input  v-show="premium == ''" type="button" class="online-button-2" @click="go_page('register')" value="Register" /> &nbsp; <input  v-show="premium == ''" type="button" class="online-button-2" @click="go_page('aircache')" value="AIRCache" />
 
 </div>
@@ -203,6 +193,10 @@ const OnlinePage = {
               this.$refs.aircache_page.setUsername(username, true);   
             }
           }
+        } else if (this.token === '' && uri.indexOf('/register/') === 0) {
+          this.go_page('register');
+        } else if (this.token === '' && uri.indexOf('/login/') === 0) {
+          this.go_page('login');
         }
       }
     },
