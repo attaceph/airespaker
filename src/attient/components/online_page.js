@@ -14,7 +14,9 @@ const gv_online_page_text = `  __ _(_)  _ _ ___ ____ __   __ _\| \|_____ _ _
               AI Response Taker
 ===============================================
 
+`;
 
+const gv_online_page_text_2 = `
 ---------------------\|_\|-----------------------
                   Overview
 -----------------------------------------------
@@ -60,7 +62,25 @@ By using AIRCache, users can save money, query more & pay less.
 
 const OnlinePage = {
   template: `<div v-show="online && page == 'home'" class="online-page"><div class="online-page-inner">=======_==========================<span v-on:click="hide=false">_</span>============<br/>{{ online_page_text }}
-  
+
+<div><div v-show="hide">---------------------\|_\|-----------------------
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:green">Comming Soon</span>
+<br/>-----------------------------------------------<br/><br/>
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/attaceph/airespaker/blob/main/brd/icon-96.png?raw=true" v-on:click="hide=false" style="cursor: pointer; cursor: hand; margin-top: -8px; width: 20px; height: 20px; " />&nbsp;Launching on 04 Aug 2026&nbsp;<img src="https://github.com/attaceph/airespaker/blob/main/brd/icon-96.png?raw=true" v-on:click="hide=false" style="cursor: pointer; cursor: hand; margin-top: -8px; width: 20px; height: 20px; " />
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/></div>
+<br/><a href="https://www.producthunt.com/products/airespaker-ai-response-taker" target="_blank" rel="noopener noreferrer"><img alt="[airespaker] AI Response Taker - Notes keeper for AI responses | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1198843&amp;theme=light&amp;t=1784279627210"></a><br/>
+
+<div v-show="hide">
+<div><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Try thing first
+<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
+
+<br/><input type="button" class="online-button-2" @click="go_page('aircache')" value="AIRCache" /><br/><br/></div>
+</div>
+
+{{ online_page_text_2 }}
+
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Features Review
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/><br/>
@@ -104,7 +124,7 @@ const OnlinePage = {
 
 <br/>+ <a target="_blank" href="https://airespaker.is-best.net/pay-premium.php">How to pay?</a><br/><br/><br/>
 
-<div v-show="!hide">---------------------\|_\|-----------------------
+<div>---------------------\|_\|-----------------------
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Getting Started
 <br/>-----------------------------------------------<br/>
 
@@ -118,23 +138,9 @@ const OnlinePage = {
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Entrance
 <br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/><br/>
-<input v-show="!hide" type="button" class="online-button-2" @click="go_page('login')" value="Login" /> &nbsp; <input  v-show="!hide && premium == ''" type="button" class="online-button-2" @click="go_page('register')" value="Register" /> &nbsp; <input  v-show="!hide && premium == ''" type="button" class="online-button-2" @click="go_page('aircache')" value="AIRCache" />
+<input type="button" class="online-button-2" @click="go_page('login')" value="Login" /> &nbsp; <input  v-show="premium == ''" type="button" class="online-button-2" @click="go_page('register')" value="Register" /> &nbsp; <input  v-show="premium == ''" type="button" class="online-button-2" @click="go_page('aircache')" value="AIRCache" />
 
 </div>
-
-<div v-show="hide">---------------------\|_\|-----------------------
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:green">Comming Soon</span>
-<br/>-----------------------------------------------<br/><br/>
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="https://github.com/attaceph/airespaker/blob/main/brd/icon-96.png?raw=true" v-on:click="hide=false" style="cursor: pointer; cursor: hand; margin-top: -8px; width: 20px; height: 20px; " />&nbsp;Launching on 04 Aug 2026&nbsp;<img src="https://github.com/attaceph/airespaker/blob/main/brd/icon-96.png?raw=true" v-on:click="hide=false" style="cursor: pointer; cursor: hand; margin-top: -8px; width: 20px; height: 20px; " />
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
-<br/><a href="https://www.producthunt.com/products/airespaker-ai-response-taker" target="_blank" rel="noopener noreferrer"><img alt="[airespaker] AI Response Taker - Notes keeper for AI responses | Product Hunt" width="250" height="54" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1198843&amp;theme=light&amp;t=1784279627210"></a><br/>
-
-<div v-show="premium == ''"><br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Try thing first
-<br/>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-------------------------------------<br/>
-
-<br/><input v-show="hide" type="button" class="online-button-2" @click="go_page('aircache')" value="AIRCache" /></div>
 
   </div>
   </div>
@@ -155,6 +161,7 @@ const OnlinePage = {
       page: 'home',
       token: '',
       online_page_text: gv_online_page_text,
+      online_page_text_2: gv_online_page_text_2,
       online: false,
       hide: go_enable_prelaunch
     };
