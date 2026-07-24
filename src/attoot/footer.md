@@ -17,4 +17,10 @@
 <p>=========|__|==========================</p><p><a href="https://airespaker.is-best.net/register/">[airespaker] AI Response Taker -:- Register Now</a></p><p>======================================</p>
 
 
+---------------------|_|-----------------------
+           Footer 2 (Short - Register)
+-----------------------------------------------
+
+<p>=|_|=&gt; <a href="https://tinyurl.com/airespaker">tinyurl.com/airespaker</a> &lt;=|_|=</p>
+
 ```
