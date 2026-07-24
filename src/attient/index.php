@@ -20,7 +20,7 @@ function gf_param( $key ) {
 $rand = trim(gf_param('rnd'));
 if (strlen( $rand ) < 8) {
   $uri = $_SERVER['REQUEST_URI'];
-  if (strpos( $uri, '/c/' ) === false) {
+  if (strpos( $uri, '/c/' ) === false && strpos( $uri, '/register/' ) === false && strpos( $uri, '/login/' ) === false) {
     if ( strpos( $uri, '?' ) === false ) {
       $uri .= '?rnd=' . uniqid();
     } else {
