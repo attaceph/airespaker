@@ -850,6 +850,7 @@ function g_openrouter_ai( $query, &$reply, &$model, &$error, $token = '' ) {
   ];
   $reply = '';
   $json = json_encode( $data );
+  $json = str_replace( "'", "'\\''", $json);
   $size = strlen( $json );
   $url = 'https://openrouter.ai/api/v1/chat/completions';
   $cmd = "$curl_cmd --connect-timeout 3600 --max-time 3600 -X POST \"$url\" -H \"Authorization: Bearer $api_key\" -H \"Content-Type: application/json\" -d '$json'";
