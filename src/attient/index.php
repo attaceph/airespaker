@@ -11,6 +11,26 @@
 global $g_config;
 require_once __DIR__ . '/config.php';
 
+function gf_param( $key ) {
+  if ( isset( $_POST[ $key ] ) ) return $_POST[ $key ];
+  if ( isset( $_GET[ $key ] ) ) return $_GET[ $key ];
+  return '';
+}
+
+$rand = trim(gf_param('rnd'));
+if (strlen( $rand ) < 8) {
+  $uri = $_SERVER['REQUEST_URI'];
+  if (strpos( $uri, '/c/' ) === false) {
+    if ( strpos( $uri, '?' ) === false ) {
+      $uri .= '?rnd=' . uniqid();
+    } else {
+      $uri .= '&rnd=' . uniqid();
+    }
+    header("Location: $uri");
+    exit();
+  }
+}
+
 $premium = $g_config['premium'];
 if ( $g_config['prelaunch'] ) {
   $prelaunch = 'true';
@@ -27,24 +47,24 @@ $aircache_default_query = $g_config['aircache_default_query'];
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <script src="/components/md2html.js"></script>
-  <link rel="stylesheet" href="/components/md2html.css">
-  <script src="/components/offline_page.js"></script>
-  <link rel="stylesheet" href="/components/offline_page.css">
-  <script src="/components/online_page.js"></script>
-  <link rel="stylesheet" href="/components/online_page.css">
-  <script src="/components/login_page.js"></script>
-  <link rel="stylesheet" href="/components/login_page.css">
-  <script src="/components/dashboard_page.js"></script>
-  <link rel="stylesheet" href="/components/dashboard_page.css">
-  <script src="/components/take_page.js"></script>
-  <link rel="stylesheet" href="/components/take_page.css">
-  <script src="/components/profile_page.js"></script>
-  <link rel="stylesheet" href="/components/profile_page.css">
-  <script src="/components/register_page.js"></script>
-  <link rel="stylesheet" href="/components/register_page.css">
-  <script src="/components/aircache_page.js"></script>
-  <link rel="stylesheet" href="/components/aircache_page.css">
-  <script src="/components/savecache_page.js"></script>
+  <link rel="stylesheet" href="/components/md2html.css?rnd=<?php print(uniqid()); ?>">
+  <script src="/components/offline_page.js?rnd=<?php print(uniqid()); ?>"></script>
+  <link rel="stylesheet" href="/components/offline_page.css?rnd=<?php print(uniqid()); ?>">
+  <script src="/components/online_page.js?rnd=<?php print(uniqid()); ?>"></script>
+  <link rel="stylesheet" href="/components/online_page.css?rnd=<?php print(uniqid()); ?>">
+  <script src="/components/login_page.js?rnd=<?php print(uniqid()); ?>"></script>
+  <link rel="stylesheet" href="/components/login_page.css?rnd=<?php print(uniqid()); ?>">
+  <script src="/components/dashboard_page.js?rnd=<?php print(uniqid()); ?>"></script>
+  <link rel="stylesheet" href="/components/dashboard_page.css?rnd=<?php print(uniqid()); ?>">
+  <script src="/components/take_page.js?rnd=<?php print(uniqid()); ?>"></script>
+  <link rel="stylesheet" href="/components/take_page.css?rnd=<?php print(uniqid()); ?>">
+  <script src="/components/profile_page.js?rnd=<?php print(uniqid()); ?>"></script>
+  <link rel="stylesheet" href="/components/profile_page.css?rnd=<?php print(uniqid()); ?>">
+  <script src="/components/register_page.js?rnd=<?php print(uniqid()); ?>"></script>
+  <link rel="stylesheet" href="/components/register_page.css?rnd=<?php print(uniqid()); ?>">
+  <script src="/components/aircache_page.js?rnd=<?php print(uniqid()); ?>"></script>
+  <link rel="stylesheet" href="/components/aircache_page.css?rnd=<?php print(uniqid()); ?>">
+  <script src="/components/savecache_page.js?rnd=<?php print(uniqid()); ?>"></script>
   <script src="https://cdn.jsdelivr.net/npm/latex.js/dist/latex.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/github.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script> 
