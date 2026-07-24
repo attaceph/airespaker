@@ -1,0 +1,39 @@
+1)
++ Why is processing a sorted array faster than processing an unsorted array?
+o processing-sorted-array-faster-processing-770c8521a5ecf091e4ab1aa0a9da1c5f
+
+2)
++ How do I undo the most recent local commits in Git?
+o undo-local-commits-git
+
+3)
++ How do I delete a Git branch locally and remotely?
+o delete-git-branch-locally-remotely
+
+4)
++ What is the difference between 'git pull' and 'git fetch'?
+o difference-_git-pull_-_git-fetch
+
+5)
++ What does the "yield" keyword do in Python?
+o yield_-keyword-python
+
+6)
++ How can I remove a specific item from an array in JavaScript?
+o remove-specific-item-array-javascript
+
+7)
++ Which JSON content type do I use?
+o json-content-type
+
+8)
++ How do I rename a local Git branch?
+o rename-local-git-branch
+
+9)
++ How do I undo 'git add' before commit?
+o undo-_git-add_-commit
+
+10)
++ What is the '-->' operator in C/C++?
+o -_-operator-c_c
